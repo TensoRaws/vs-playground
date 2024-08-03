@@ -8,8 +8,6 @@ RUN conda install conda-forge::jupyterlab -y
 # Install yuuno
 RUN pip install yuuno
 
-COPY ./example.ipynb /video/
-
 ENV JUPYTER_TOKEN=homo
 ENV JUPYTER_PORT=8888
 EXPOSE $JUPYTER_PORT

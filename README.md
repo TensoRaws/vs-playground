@@ -1,3 +1,3 @@
-# vs-dev-docker
+# vs-playground
 
-dev docker for vapoursynth
+dev with docker and jupyter notebook!
