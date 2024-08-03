@@ -1,4 +1,4 @@
-FROM lychee0/vs-pytorch
+FROM lychee0/vs-pytorch:dev
 
 WORKDIR /video
 
