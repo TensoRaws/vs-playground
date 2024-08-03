@@ -1,0 +1,12 @@
+FROM lychee0/vs-pytorch
+
+WORKDIR /video
+
+# Install Jupyter
+RUN conda install conda-forge::jupyterlab -y
+
+
+ENV JUPYTER_PORT=8888
+EXPOSE $JUPYTER_PORT
+
+CMD jupyter lab --ip='*' --port=8888 --no-browser --allow-root --NotebookApp.token=''
