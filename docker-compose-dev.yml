@@ -8,7 +8,7 @@ networks:
 
 services:
   playground:
-    image: lychee0/vs-playground
+    image: lychee0/vs-playground:dev
     container_name: playground
     restart: always
     ports:
