@@ -7,7 +7,7 @@ networks:
     driver: bridge
 
 services:
-  worker-encode:
+  playground:
     image: lychee0/vs-playground
     container_name: playground
     restart: always
