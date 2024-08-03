@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build-pt:
+  build_pt:
     docker:
       - image: cimg/go:1.17
 
@@ -17,7 +17,7 @@ jobs:
           echo $DOCKERHUB_PASSWORD | docker login -u lychee0 --password-stdin
           make pt-dev
 
-  build-vs:
+  build_vs:
     docker:
       - image: cimg/go:1.17
 
