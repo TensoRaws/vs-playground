@@ -127,3 +127,4 @@ tmp
 *.flv
 *.wmv
 *.mpg
+/video/.ipynb_checkpoints/
