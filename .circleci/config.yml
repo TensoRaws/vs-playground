@@ -16,3 +16,4 @@ jobs:
       - run: |
           echo $DOCKERHUB_PASSWORD | docker login -u lychee0 --password-stdin
           make pt-dev
+          make vs-dev
