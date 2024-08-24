@@ -3,10 +3,10 @@ FROM lychee0/vs-pytorch:dev
 WORKDIR /video
 
 # Install Jupyter
-RUN conda install conda-forge::jupyterlab -y
+RUN conda install conda-forge::jupyterlab=4.0.0 -y
 
 # Install yuuno
-RUN pip install yuuno
+RUN pip install yuuno==1.4
 
 ENV JUPYTER_TOKEN=homo
 ENV JUPYTER_PORT=8888

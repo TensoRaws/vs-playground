@@ -21,7 +21,7 @@ pt-dev:
 	docker push lychee0/vs-pytorch:dev
 
 .PHONY: pg
-vs:
+pg:
 	docker buildx build -f vs-playground.dockerfile -t lychee0/vs-playground .
 
 .PHONY: pg-dev
