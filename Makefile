@@ -20,12 +20,12 @@ pt-dev:
 	docker login
 	docker push lychee0/vs-pytorch:dev
 
-.PHONY: vs
+.PHONY: pg
 vs:
 	docker buildx build -f vs-playground.dockerfile -t lychee0/vs-playground .
 
-.PHONY: vs-dev
-vs-dev:
+.PHONY: pg-dev
+pg-dev:
 	docker buildx build -f vs-playground.dockerfile -t lychee0/vs-playground .
 	docker tag lychee0/vs-playground lychee0/vs-playground:dev
 	docker login
