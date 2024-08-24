@@ -29,9 +29,7 @@ RUN conda install conda-forge::numpy=1.26.4 -y
 RUN conda install fastai::opencv-python-headless=4.10.0.82 -y
 
 # install PyTorch
-RUN conda install conda-forge::pytorch-gpu -y
-RUN conda install pytorch::torchvision -y
-RUN conda install pytorch::torchaudio -y
+RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 # install AI packages
 RUN pip install vsrealesrgan
