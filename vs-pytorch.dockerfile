@@ -1,14 +1,14 @@
-FROM continuumio/miniconda3:24.5.0-0
+FROM continuumio/miniconda3:24.1.2-0
 
 # prepare environment
-RUN conda install python=3.10.* -y
-RUN apt update && apt install -y libgl1-mesa-glx
+RUN apt update -y && apt upgrade -y
+RUN conda config --append channels tongyuantongyu
+RUN apt install -y libgl1-mesa-glx
 
 # install vapoursynth
 RUN conda install conda-forge::vapoursynth=69 -y
 
 # install vapoursynth C++ plugins
-RUN conda install -n base libarchive -c main --force-reinstall -y
 RUN conda install tongyuantongyu::vapoursynth-bestsource=5 -y
 RUN conda install tongyuantongyu::vapoursynth-fmtconv=30 -y
 
@@ -22,7 +22,7 @@ RUN pip install numpy==1.26.4
 RUN pip install opencv-python==4.10.0.82
 
 # install PyTorch
-RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+RUN pip install torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 --index-url https://download.pytorch.org/whl/cu118
 
 # install AI packages
 RUN pip install vsrealesrgan
