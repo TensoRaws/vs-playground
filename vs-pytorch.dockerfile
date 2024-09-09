@@ -1,4 +1,4 @@
-FROM continuumio/miniconda3:24.1.2-0
+FROM ubuntu:22.04
 
 # prepare environment
 RUN apt update -y && apt upgrade -y
@@ -11,6 +11,17 @@ RUN apt install -y \
     libffi-dev \
     libopenblas-dev \
     git
+
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py310_24.7.1-0-Linux-x86_64.sh
+RUN bash Miniconda3-py310_24.7.1-0-Linux-x86_64.sh -b -p /opt/conda && rm -rf Miniconda3-latest-Linux-x86_64.sh
+
+# Add the conda binary folder to the path
+ENV PATH /opt/conda/bin:$PATH
+ENV CONDARC_PATH /opt/conda/.condarc
+ENV CONDARC $CONDARC_PATH
+ENV PYTHONUNBUFFERED 1
+
+RUN conda install --solver=classic conda-forge::conda-libmamba-solver conda-forge::libmamba conda-forge::libmambapy conda-forge::libarchive
 
 # install vapoursynth
 RUN conda install conda-forge::vapoursynth=69 -y
