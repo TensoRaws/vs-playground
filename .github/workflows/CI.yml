@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
+      - LICENSE
+  pull_request:
+    paths-ignore:
+      - "**.md"
+      - LICENSE
+  workflow_dispatch:
+
+jobs:
+  unit-test:
+    strategy:
+      matrix:
+        os-version: ["ubuntu-latest"]
+
+    runs-on: ${{ matrix.os-version }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Test
+        run: |
+          make lint
