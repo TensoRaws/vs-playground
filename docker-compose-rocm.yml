@@ -1,0 +1,37 @@
+version: "3.8"
+
+name: vs
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  playground-rocm-wsl2:
+    image: lychee0/vs-playground:rocm
+    container_name: playground-rocm-wsl2
+    restart: always
+    ports:
+      - "8888:8888"
+      - "8022:22"
+    volumes:
+      - type: bind
+        source: /usr/lib/wsl
+        target: /usr/lib/wsl
+      - ./video:/video
+    environment:
+      - LD_LIBRARY_PATH=/usr/lib/wsl/lib
+      - JUPYTER_TOKEN=114514
+    #    privileged: true
+    #    shm_size: 8g
+    #    group_add:
+    #      - video
+    #    ipc: host
+    #    cap_add:
+    #      - SYS_PTRACE
+    devices:
+      - /dev/dxg
+    #    security_opt:
+    #      - seccomp:unconfined
+    networks:
+      - backend
