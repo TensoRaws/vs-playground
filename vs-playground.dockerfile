@@ -1,4 +1,6 @@
-FROM lychee0/vs-pytorch:dev
+ARG BASE_CONTAINER_TAG=cuda
+
+FROM lychee0/vs-pytorch:${BASE_CONTAINER_TAG}
 
 WORKDIR /video
 
