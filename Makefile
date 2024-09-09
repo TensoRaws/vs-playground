@@ -51,3 +51,8 @@ pg-rocm-release:
 
 .PHONY: release
 release: pt pt-release pg pg-release pt-rocm pt-rocm-release pg-rocm pg-rocm-release
+
+.PHONY: dev
+dev:
+	 docker compose -f docker-compose-dev.yml down
+	 docker compose -f docker-compose-dev.yml up -d

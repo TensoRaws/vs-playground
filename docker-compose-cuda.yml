@@ -7,9 +7,9 @@ networks:
     driver: bridge
 
 services:
-  playground:
-    image: lychee0/vs-playground:dev
-    container_name: playground
+  playground-cuda:
+    image: lychee0/vs-playground:cuda
+    container_name: playground-cuda
     restart: always
     ports:
       - "8888:8888"
