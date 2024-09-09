@@ -41,7 +41,7 @@ pg-release:
 
 .PHONY: pg-rocm
 pg-rocm:
-	docker buildx build -f vs-playground-rocm.dockerfile -t lychee0/vs-playground --build-arg BASE_CONTAINER_TAG=rocm .
+	docker buildx build -f vs-playground.dockerfile -t lychee0/vs-playground --build-arg BASE_CONTAINER_TAG=rocm .
 	docker tag lychee0/vs-playground lychee0/vs-playground:rocm
 
 .PHONY: pg-rocm-release
