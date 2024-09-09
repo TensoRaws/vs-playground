@@ -50,7 +50,10 @@ pg-rocm-release:
 	docker push lychee0/vs-playground:rocm
 
 .PHONY: release
-release: pt pt-release pg pg-release pt-rocm pt-rocm-release pg-rocm pg-rocm-release
+release: pt pt-release pg pg-release
+
+.PHONY: release-rocm
+release-rocm: pt-rocm pt-rocm-release pg-rocm pg-rocm-release
 
 .PHONY: dev
 dev:
