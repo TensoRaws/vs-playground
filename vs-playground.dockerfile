@@ -11,7 +11,7 @@ RUN pip install jupyterlab==4.0.0
 RUN pip install yuuno==1.4
 
 # Install ssh
-RUN apt update && apt install openssh-server -y
+RUN apt install openssh-server -y
 RUN echo 'root:123456' | chpasswd
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -i 's/#Port 22/Port 22/' /etc/ssh/sshd_config
