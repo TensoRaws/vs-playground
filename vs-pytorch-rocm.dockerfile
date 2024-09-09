@@ -34,42 +34,42 @@ RUN apt install -y \
     && apt update
 
 RUN wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.2-0ubuntu2.1_amd64.deb
-RUN apt install -y ./libtinfo5_6.2-0ubuntu2.1_amd64.deb
+RUN apt install -y ./libtinfo5_6.2-0ubuntu2.1_amd64.deb && rm -f ./libtinfo5_6.2-0ubuntu2.1_amd64.deb
 
 RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/s/suitesparse/libsuitesparseconfig5_5.10.1+dfsg-4build1_amd64.deb
-RUN apt install -y ./libsuitesparseconfig5_5.10.1+dfsg-4build1_amd64.deb
+RUN apt install -y ./libsuitesparseconfig5_5.10.1+dfsg-4build1_amd64.deb && rm -f ./libsuitesparseconfig5_5.10.1+dfsg-4build1_amd64.deb
 
 RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/s/suitesparse/libccolamd2_5.10.1+dfsg-4build1_amd64.deb
-RUN apt install -y ./libccolamd2_5.10.1+dfsg-4build1_amd64.deb
+RUN apt install -y ./libccolamd2_5.10.1+dfsg-4build1_amd64.deb && rm -f ./libccolamd2_5.10.1+dfsg-4build1_amd64.deb
 
 RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/s/suitesparse/libcamd2_5.7.1+dfsg-2_amd64.deb
-RUN apt install -y ./libcamd2_5.7.1+dfsg-2_amd64.deb
+RUN apt install -y ./libcamd2_5.7.1+dfsg-2_amd64.deb && rm -f ./libcamd2_5.7.1+dfsg-2_amd64.deb
 
 RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/s/suitesparse/libcolamd2_5.7.1+dfsg-2_amd64.deb
-RUN apt install -y ./libcolamd2_5.7.1+dfsg-2_amd64.deb
+RUN apt install -y ./libcolamd2_5.7.1+dfsg-2_amd64.deb && rm -f ./libcolamd2_5.7.1+dfsg-2_amd64.deb
 
 RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/s/suitesparse/libamd2_5.7.1+dfsg-2_amd64.deb
-RUN apt install -y ./libamd2_5.7.1+dfsg-2_amd64.deb
+RUN apt install -y ./libamd2_5.7.1+dfsg-2_amd64.deb && rm -f ./libamd2_5.7.1+dfsg-2_amd64.deb
 
 RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/s/suitesparse/libcholmod3_5.7.1+dfsg-2_amd64.deb
-RUN apt install -y ./libcholmod3_5.7.1+dfsg-2_amd64.deb
+RUN apt install -y ./libcholmod3_5.7.1+dfsg-2_amd64.deb && rm -f ./libcholmod3_5.7.1+dfsg-2_amd64.deb
 
 RUN wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libncurses5_6.2-0ubuntu2.1_amd64.deb
-RUN apt install -y ./libncurses5_6.2-0ubuntu2.1_amd64.deb
+RUN apt install -y ./libncurses5_6.2-0ubuntu2.1_amd64.deb && rm -f ./libncurses5_6.2-0ubuntu2.1_amd64.deb
 
 RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/m/mime-support/mime-support_3.66_all.deb
-RUN apt install -y ./mime-support_3.66_all.deb
+RUN apt install -y ./mime-support_3.66_all.deb && rm -f ./mime-support_3.66_all.deb
 
 RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/libf/libffi7/libffi7_3.3-5ubuntu1_amd64.deb
-RUN apt install -y ./libffi7_3.3-5ubuntu1_amd64.deb
+RUN apt install -y ./libffi7_3.3-5ubuntu1_amd64.deb && rm -f ./libffi7_3.3-5ubuntu1_amd64.deb
 
 RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/m/mpdecimal/libmpdec2_2.4.2-3_amd64.deb
-RUN apt install -y ./libmpdec2_2.4.2-3_amd64.deb
+RUN apt install -y ./libmpdec2_2.4.2-3_amd64.deb && rm -f ./libmpdec2_2.4.2-3_amd64.deb
 
 # Download the AMD GPU installer package
 RUN wget https://repo.radeon.com/amdgpu-install/6.1.3/ubuntu/jammy/amdgpu-install_6.1.60103-1_all.deb
 
-RUN apt install -y ./amdgpu-install_6.1.60103-1_all.deb
+RUN apt install -y ./amdgpu-install_6.1.60103-1_all.deb && rm -f ./amdgpu-install_6.1.60103-1_all.deb
 
 RUN amdgpu-install -y --usecase=wsl,rocm --no-dkms
 
@@ -115,6 +115,11 @@ RUN location=$(pip show torch | grep Location | awk -F ": " '{print $2}') && \
     rm -f libhsa-runtime64.so* && \
     cp /opt/rocm/lib/libhsa-runtime64.so.1.2 libhsa-runtime64.so
 
-# Install AI packages
+## install AI packages
 #RUN pip install vsrealesrgan
 #RUN python -m vsrealesrgan
+
+# clear cache
+RUN apt clean
+RUN pip cache purge
+RUN conda clean -all -y

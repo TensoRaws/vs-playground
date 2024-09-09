@@ -34,3 +34,8 @@ RUN pip install torch torchvision torchaudio --index-url https://download.pytorc
 # install AI packages
 RUN pip install vsrealesrgan
 RUN python -m vsrealesrgan
+
+# clear cache
+RUN apt clean
+RUN pip cache purge
+RUN conda clean -all -y
