@@ -116,8 +116,7 @@ RUN location=$(pip show torch | grep Location | awk -F ": " '{print $2}') && \
     cp /opt/rocm/lib/libhsa-runtime64.so.1.2 libhsa-runtime64.so
 
 ## install AI packages
-#RUN pip install vsrealesrgan
-#RUN python -m vsrealesrgan
+RUN pip install ccrestoration
 
 # clear cache
 RUN apt clean
