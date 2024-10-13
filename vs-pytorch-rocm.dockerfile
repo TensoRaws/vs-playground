@@ -82,7 +82,7 @@ ENV CONDARC_PATH /opt/conda/.condarc
 ENV CONDARC $CONDARC_PATH
 ENV PYTHONUNBUFFERED 1
 
-RUN conda install --solver=classic conda-forge::conda-libmamba-solver conda-forge::libmamba conda-forge::libmambapy conda-forge::libarchive
+RUN conda install conda-forge::conda-libmamba-solver conda-forge::libmamba conda-forge::libmambapy conda-forge::libarchive --force -y
 
 # install vapoursynth
 RUN conda install conda-forge::vapoursynth=69 -y
@@ -116,8 +116,7 @@ RUN location=$(pip show torch | grep Location | awk -F ": " '{print $2}') && \
     cp /opt/rocm/lib/libhsa-runtime64.so.1.2 libhsa-runtime64.so
 
 ## install AI packages
-#RUN pip install vsrealesrgan
-#RUN python -m vsrealesrgan
+RUN pip install ccrestoration
 
 # clear cache
 RUN apt clean

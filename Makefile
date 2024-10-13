@@ -1,8 +1,8 @@
 .DEFAULT_GOAL := default
 
-.PHONY: lint
+.PHONY: lint ## pip install pre-commit
 lint:
-	pre-commit install # pip install pre-commit
+	pre-commit install
 	pre-commit run --all-files
 
 .PHONY: pt
@@ -57,8 +57,8 @@ release-rocm: pt-rocm pt-rocm-release pg-rocm pg-rocm-release
 
 .PHONY: dev
 dev:
-	docker compose -f docker-compose-cuda.yml down
-	docker compose -f docker-compose-cuda.yml up -d
+	docker compose -f docker-compose.yml down
+	docker compose -f docker-compose.yml up -d
 
 .PHONY: dev-rocm
 dev-rocm:

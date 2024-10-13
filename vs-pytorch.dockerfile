@@ -21,7 +21,7 @@ ENV CONDARC_PATH /opt/conda/.condarc
 ENV CONDARC $CONDARC_PATH
 ENV PYTHONUNBUFFERED 1
 
-RUN conda install --solver=classic conda-forge::conda-libmamba-solver conda-forge::libmamba conda-forge::libmambapy conda-forge::libarchive
+RUN conda install conda-forge::conda-libmamba-solver conda-forge::libmamba conda-forge::libmambapy conda-forge::libarchive --force -y
 
 # install vapoursynth
 RUN conda install conda-forge::vapoursynth=69 -y
@@ -40,11 +40,10 @@ RUN conda install conda-forge::numpy=1.26.4 -y
 RUN conda install fastai::opencv-python-headless=4.10.0.82 -y
 
 # install PyTorch
-RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+RUN pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118
 
 # install AI packages
-RUN pip install vsrealesrgan
-RUN python -m vsrealesrgan
+RUN pip install ccrestoration
 
 # clear cache
 RUN apt clean
