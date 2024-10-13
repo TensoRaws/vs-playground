@@ -6,6 +6,7 @@ dev with docker and jupyter notebook!
 
 - docker and docker-compose
 - Nvidia GPU / AMD GPU with ROCm support (7000 series on WSL2)
+- GPU container runtime (optional)
 - make (optional)
 
 ### Dev
