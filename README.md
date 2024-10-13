@@ -1,5 +1,7 @@
 # vs-playground
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/RJWBNXdmdaDACvcacXFQ3e/Ft9gQaqD6LLAwZL3wjB4WL/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/RJWBNXdmdaDACvcacXFQ3e/Ft9gQaqD6LLAwZL3wjB4WL/tree/main)
+
 dev with docker and jupyter notebook!
 
 ### Preparations
