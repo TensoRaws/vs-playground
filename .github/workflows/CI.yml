@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  unit-test:
+  lint:
     strategy:
       matrix:
         os-version: ["ubuntu-20.04"]
