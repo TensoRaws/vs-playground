@@ -9,7 +9,7 @@ dev with docker and jupyter notebook!
 - GPU container runtime (optional)
 - make (optional)
 
-### Dev
+### Start
 
 ```bash
 make dev
@@ -26,6 +26,14 @@ template ipynb file is in [./video](./video) folder, you should put video in her
 load yuuno plugin in jupyter notebook, then you can preview any frame
 
 #### _run the example code in order, encode your first video!_
+
+### SSH
+
+the playground image has sshd installed, you can ssh into the container to dev
+
+- default port: 8022 (8022:22)
+- user: root
+- password: 123456
 
 ### Build
 
