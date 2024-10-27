@@ -17,8 +17,9 @@ RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/
 RUN sed -i 's/#Port 22/Port 22/' /etc/ssh/sshd_config
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
-ENV JUPYTER_TOKEN=homo
+ENV JUPYTER_TOKEN=114514
 ENV JUPYTER_PORT=8888
+
 EXPOSE $JUPYTER_PORT
 
 EXPOSE 22
