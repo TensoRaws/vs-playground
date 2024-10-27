@@ -12,8 +12,8 @@ services:
     container_name: playground-rocm-wsl2
     restart: always
     ports:
-      - "8888:8888"
-      - "8022:22"
+      - "1145:8888"
+      - "1022:22"
     volumes:
       - type: bind
         source: /usr/lib/wsl

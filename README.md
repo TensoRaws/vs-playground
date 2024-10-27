@@ -19,7 +19,7 @@ make dev
 
 `make dev-rocm` for AMD GPU
 
-open `http://localhost:8888` in your browser, default password is `114514`
+open `http://localhost:1145` in your browser, default password is `114514`
 
 template ipynb file is in [./video](./video) folder, you should put video in here
 
@@ -33,7 +33,7 @@ load yuuno plugin in jupyter notebook, then you can preview any frame
 
 the playground image has sshd installed, you can ssh into the container to dev
 
-- default port: 8022 (8022:22)
+- default port: 1022 (1022:22)
 - user: root
 - password: 123456
 
