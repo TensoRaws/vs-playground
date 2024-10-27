@@ -116,7 +116,7 @@ RUN location=$(pip show torch | grep Location | awk -F ": " '{print $2}') && \
     cp /opt/rocm/lib/libhsa-runtime64.so.1.2 libhsa-runtime64.so
 
 ## install AI packages
-RUN pip install ccrestoration
+RUN pip install ccrestoration==0.1.0
 
 # clear cache
 RUN apt clean
