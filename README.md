@@ -29,6 +29,8 @@ load yuuno plugin in jupyter notebook, then you can preview any frame
 
 #### _run the example code in order, encode your first video!_
 
+![vsplayground001](https://raw.githubusercontent.com/TensoRaws/.github/refs/heads/main/vsplayground001.png)
+
 ### SSH
 
 the playground image has sshd installed, you can ssh into the container to dev
