@@ -43,7 +43,7 @@ RUN conda install fastai::opencv-python-headless=4.10.0.82 -y
 RUN pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118
 
 # install AI packages
-RUN pip install ccrestoration==0.1.0
+RUN pip install ccrestoration==0.1.2
 
 # clear cache
 RUN apt clean
