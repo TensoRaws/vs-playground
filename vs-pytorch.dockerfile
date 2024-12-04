@@ -21,7 +21,11 @@ ENV CONDARC_PATH /opt/conda/.condarc
 ENV CONDARC $CONDARC_PATH
 ENV PYTHONUNBUFFERED 1
 
+RUN conda config --add channels conda-forge
 RUN conda install conda-forge::conda-libmamba-solver conda-forge::libmamba conda-forge::libmambapy conda-forge::libarchive --force -y
+
+# install FFmpeg
+RUN conda install conda-forge::ffmpeg=7.0.2 -y
 
 # install vapoursynth
 RUN conda install conda-forge::vapoursynth=69 -y

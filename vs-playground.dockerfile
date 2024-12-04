@@ -2,6 +2,9 @@ ARG BASE_CONTAINER_TAG=cuda
 
 FROM lychee0/vs-pytorch:${BASE_CONTAINER_TAG}
 
+# prepare environment
+RUN apt update -y && apt upgrade -y
+
 WORKDIR /video
 
 # Install Jupyter
