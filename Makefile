@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := default
 
-version := v0.0.1
+version := v0.0.2
 
 .PHONY: lint ## pip install pre-commit
 lint:
