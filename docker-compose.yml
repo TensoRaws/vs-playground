@@ -8,8 +8,7 @@ networks:
 
 services:
   playground-cuda:
-    image: lychee0/vs-playground:cuda
-    container_name: playground-cuda
+    image: lychee0/vs-playground:cuda-dev
     restart: always
     ports:
       - "1145:8888"

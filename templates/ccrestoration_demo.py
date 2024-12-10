@@ -8,7 +8,7 @@ from ccrestoration import AutoModel, BaseModelInterface, ConfigType
 # --- sisr, use fp16 to inference (vs.RGBH)
 
 model: BaseModelInterface = AutoModel.from_pretrained(
-    pretrained_model_name=ConfigType.RealESRGAN_AnimeJaNai_HD_V3_Compact_2x
+    pretrained_model_name=ConfigType.RealESRGAN_AnimeJaNai_HD_V3_Compact_2x, tile=None
 )
 
 if os.getenv("FINALRIP_SOURCE"):
