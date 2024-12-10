@@ -8,8 +8,7 @@ networks:
 
 services:
   playground-rocm-wsl2:
-    image: lychee0/vs-playground:rocm
-    container_name: playground-rocm-wsl2
+    image: lychee0/vs-playground:rocm-dev
     restart: always
     ports:
       - "1145:8888"
