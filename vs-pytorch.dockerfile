@@ -48,8 +48,3 @@ RUN pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url h
 
 # install AI packages
 RUN pip install ccrestoration==0.2.1
-
-# clear cache
-RUN apt clean
-RUN pip cache purge
-RUN conda clean -all -y
