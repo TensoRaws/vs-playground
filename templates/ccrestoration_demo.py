@@ -14,7 +14,7 @@ model: BaseModelInterface = AutoModel.from_pretrained(
 if os.getenv("FINALRIP_SOURCE"):
     clip = core.bs.VideoSource(source=os.getenv("FINALRIP_SOURCE"))
 else:
-    clip = core.bs.VideoSource(source="480.mkv")
+    clip = core.bs.VideoSource(source="s.mkv")
 
 clip = mvf.ToRGB(clip, depth=16, sample=vs.FLOAT)
 clip = model.inference_video(clip)
