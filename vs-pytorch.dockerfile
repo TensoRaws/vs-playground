@@ -63,8 +63,9 @@ RUN git clone https://github.com/sekrit-twc/zimg --recursive && cd zimg && \
 RUN cd zimg && checkinstall -y -pkgversion=0.0 && apt install /workspace/zimg/zimg_0.0-1_amd64.deb -y
 
 ### Install VapourSynth
-RUN wget https://github.com/vapoursynth/vapoursynth/archive/refs/tags/R69.tar.gz && \
-  tar -zxvf R69.tar.gz && mv vapoursynth-R69 vapoursynth && cd vapoursynth && \
+ARG VAPOURSYNTH_VERSION=R70
+RUN wget https://github.com/vapoursynth/vapoursynth/archive/refs/tags/${VAPOURSYNTH_VERSION}.tar.gz && \
+  tar -zxvf ${VAPOURSYNTH_VERSION}.tar.gz && mv vapoursynth-${VAPOURSYNTH_VERSION} vapoursynth && cd vapoursynth && \
   ./autogen.sh && ./configure && make -j$(nproc) && make install && ldconfig
 
 ###
