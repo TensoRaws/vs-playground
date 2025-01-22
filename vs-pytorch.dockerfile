@@ -116,20 +116,10 @@ RUN git clone https://code.videolan.org/videolan/x264.git --depth 1 && \
 
 ARG X265_VERSION=4.1
 ARG X265_URL="https://bitbucket.org/multicoreware/x265_git/downloads/x265_$X265_VERSION.tar.gz"
-# CMAKEFLAGS issue
-# https://bitbucket.org/multicoreware/x265_git/issues/620/support-passing-cmake-flags-to-multilibsh
-RUN \
-  wget -O x265_git.tar.bz2 "$X265_URL" && \
-  tar xf x265_git.tar.bz2 && cd x265_*/build/linux && \
-  cmake ../../source -G "Unix Makefiles" \
-    -DHIGH_BIT_DEPTH=ON \
-    -DEXPORT_C_API=ON \
-    -DENABLE_SHARED=ON \
-    -DENABLE_CLI=ON \
-    -DENABLE_NASM=ON \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DENABLE_AGGRESSIVE_CHECKS=ON && \
-  make -j$(nproc) install
+# multilib.sh will build 8,10,12bit libraries and link them together to 8bit's directory
+RUN wget -O x265_git.tar.bz2 "$X265_URL" && tar xf x265_git.tar.bz2 && cd x265_*/build/linux && \
+  MAKEFLAGS="-j$(nproc)" ./multilib.sh && \
+  make -C 8bit -j$(nproc) install
 
 RUN git clone https://github.com/webmproject/libwebp --depth 1 && \
   cd libwebp && ./autogen.sh && ./configure --enable-static && make -j$(nproc) install
@@ -284,10 +274,12 @@ RUN git clone https://github.com/vapoursynth/bestsource.git --depth 1 --recurse-
 
 # ffms2
 RUN apt install autoconf -y
-RUN git clone https://github.com/FFMS/ffms2 && cd ffms2 && ./autogen.sh && CFLAGS=-fPIC CXXFLAGS=-fPIC LDFLAGS="-Wl,-Bsymbolic" ./configure --enable-shared && make -j$(nproc) && make install
+RUN git clone https://github.com/FFMS/ffms2 && cd ffms2 && \
+    ./autogen.sh && CFLAGS=-fPIC CXXFLAGS=-fPIC LDFLAGS="-Wl,-Bsymbolic" ./configure --enable-shared && make -j$(nproc) && make install
 
 # fmtconv
-RUN git clone https://github.com/EleonoreMizo/fmtconv && cd fmtconv/build/unix/ && ./autogen.sh && ./configure && make -j$(nproc) && make install
+RUN git clone https://github.com/EleonoreMizo/fmtconv && cd fmtconv/build/unix/ && \
+    ./autogen.sh && ./configure && make -j$(nproc) && make install
 
 ###
 # Install VapourSynth Python plugins
