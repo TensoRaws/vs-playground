@@ -1,8 +1,5 @@
 FROM ubuntu:22.04
 
-# Set the working directory
-WORKDIR /workspace
-
 # Set environment variables to avoid user interaction during the installation process
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -51,6 +48,11 @@ RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 13
 
 # install checkinstall
 RUN apt install checkinstall -y
+
+###
+# Set the working directory for VapourSynth and FFmpeg
+###
+WORKDIR /workspace
 
 ###
 # Install VapourSynth
