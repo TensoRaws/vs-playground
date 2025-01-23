@@ -57,12 +57,12 @@ RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-CAS && c
 RUN apt install nasm libfftw3-dev -y
 RUN git clone https://github.com/dubhater/vapoursynth-mvtools && cd vapoursynth-mvtools && \
     mkdir build && cd build && meson ../ && ninja && ninja install
-RUN ln -s /usr/local/lib/libmvtools.so /usr/local/lib/vapoursynth/libmvtools.so
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libmvtools.so /usr/local/lib/vapoursynth/libmvtools.so
 
 # fillborders
 RUN git clone https://github.com/dubhater/vapoursynth-fillborders && cd vapoursynth-fillborders && \
     mkdir build && cd build && meson ../ && ninja && ninja install
-RUN ln -s /usr/local/lib/libfillborders.so /usr/local/lib/vapoursynth/libfillborders.so
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libfillborders.so /usr/local/lib/vapoursynth/libfillborders.so
 
 ###
 # Install VapourSynth Python plugins
