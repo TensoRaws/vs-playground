@@ -11,11 +11,8 @@ jobs:
           docker_layer_caching: true
       - run: |
           make ff
-      - run:
-          name: Save vs-ffmpeg:cuda image as tar
-          command: |
-            mkdir -p images/cuda
-            docker image save -o "images/cuda/vs-ffmpeg_cuda.tar" vs-ffmpeg:cuda
+          mkdir -p images/cuda
+          docker image save -o "images/cuda/vs-ffmpeg_cuda.tar" vs-ffmpeg:cuda
       - persist_to_workspace:
           root: .
           paths:
@@ -31,11 +28,8 @@ jobs:
           docker_layer_caching: true
       - run: |
           make ff-rocm
-      - run:
-          name: Save vs-ffmpeg:rocm image as tar
-          command: |
-            mkdir -p images/rocm
-            docker image save -o "images/rocm/vs-ffmpeg_rocm.tar" vs-ffmpeg:rocm
+          mkdir -p images/rocm
+          docker image save -o "images/rocm/vs-ffmpeg_rocm.tar" vs-ffmpeg:rocm
       - persist_to_workspace:
           root: .
           paths:
@@ -51,11 +45,8 @@ jobs:
           docker_layer_caching: true
       - attach_workspace:
           at: .
-      - run:
-        name: Load vs-ffmpeg:cuda image from tar
-        command: |
-          docker image load -i "images/cuda/vs-ffmpeg_cuda.tar"
       - run: |
+          docker image load -i "images/cuda/vs-ffmpeg_cuda.tar"
           echo $DOCKERHUB_PASSWORD | docker login -u lychee0 --password-stdin
           make release
 
@@ -69,11 +60,8 @@ jobs:
           docker_layer_caching: true
       - attach_workspace:
           at: .
-      - run:
-        name: Load vs-ffmpeg:rocm image from tar
-        command: |
-          docker image load -i "images/rocm/vs-ffmpeg_rocm.tar"
       - run: |
+          docker image load -i "images/rocm/vs-ffmpeg_rocm.tar"
           echo $DOCKERHUB_PASSWORD | docker login -u lychee0 --password-stdin
           make release-rocm
 
@@ -87,11 +75,8 @@ jobs:
           docker_layer_caching: true
       - attach_workspace:
           at: .
-      - run:
-        name: Load vs-ffmpeg:cuda image from tar
-        command: |
-          docker image load -i "images/cuda/vs-ffmpeg_cuda.tar"
       - run: |
+          docker image load -i "images/cuda/vs-ffmpeg_cuda.tar"
           echo $DOCKERHUB_PASSWORD | docker login -u lychee0 --password-stdin
           make release-dev
 
@@ -105,11 +90,8 @@ jobs:
           docker_layer_caching: true
       - attach_workspace:
           at: .
-      - run:
-        name: Load vs-ffmpeg:rocm image from tar
-        command: |
-          docker image load -i "images/rocm/vs-ffmpeg_rocm.tar"
       - run: |
+          docker image load -i "images/rocm/vs-ffmpeg_rocm.tar"
           echo $DOCKERHUB_PASSWORD | docker login -u lychee0 --password-stdin
           make release-rocm-dev
 
