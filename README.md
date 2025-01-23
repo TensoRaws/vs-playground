@@ -1,8 +1,12 @@
 # vs-playground
 
+[![CI-test](https://github.com/TensoRaws/vs-playground/actions/workflows/CI-test.yml/badge.svg)](https://github.com/TensoRaws/vs-playground/actions/workflows/CI-test.yml)
+[![Release](https://github.com/TensoRaws/vs-playground/actions/workflows/Release.yml/badge.svg)](https://github.com/TensoRaws/vs-playground/actions/workflows/Release.yml)
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/RJWBNXdmdaDACvcacXFQ3e/Ft9gQaqD6LLAwZL3wjB4WL/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/RJWBNXdmdaDACvcacXFQ3e/Ft9gQaqD6LLAwZL3wjB4WL/tree/main)
 
 dev with docker and jupyter notebook!
+
+### [Base Image](https://github.com/TensoRaws/vs-ffmpeg-docker)
 
 ### Preparations
 
@@ -41,16 +45,17 @@ the playground image has sshd installed, you can ssh into the container to dev
 
 ### Build
 
-build [base image](./vs-pytorch.dockerfile) (default for FinalRip) and [playground image](./vs-playground.dockerfile)
+build [image](./vs-pytorch.dockerfile) (default for FinalRip) and [playground image](./vs-playground.dockerfile)
 
 ```bash
-make ff && make pt && make pg
+make pt && make pg
 ```
 
-`make ff-rocm && make pt-rocm && make pg-rocm` for AMD GPU
+`make pt-rocm && make pg-rocm` for AMD GPU
 
 ### Reference
 
+- [vs-ffmpeg-docker](https://github.com/TensoRaws/vs-ffmpeg-docker)
 - [VapourSynth](https://www.vapoursynth.com/)
 - [yuuno](https://github.com/Irrational-Encoding-Wizardry/yuuno)
 

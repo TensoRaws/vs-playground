@@ -1,40 +1,6 @@
 version: 2.1
 
 jobs:
-  pre-build-ff-cuda:
-    docker:
-      - image: cimg/go:1.17
-    resource_class: small
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run: |
-          make ff
-          mkdir -p images/cuda
-          docker image save -o "images/cuda/vs-ffmpeg_cuda.tar" vs-ffmpeg:cuda
-      - persist_to_workspace:
-          root: .
-          paths:
-            - images/cuda
-
-  pre-build-ff-rocm:
-    docker:
-      - image: cimg/go:1.17
-    resource_class: small
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run: |
-          make ff-rocm
-          mkdir -p images/rocm
-          docker image save -o "images/rocm/vs-ffmpeg_rocm.tar" vs-ffmpeg:rocm
-      - persist_to_workspace:
-          root: .
-          paths:
-            - images/rocm
-
   build-cuda:
     docker:
       - image: cimg/go:1.17
@@ -43,10 +9,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - attach_workspace:
-          at: .
       - run: |
-          docker image load -i "images/cuda/vs-ffmpeg_cuda.tar"
           echo $DOCKERHUB_PASSWORD | docker login -u lychee0 --password-stdin
           make release
 
@@ -58,10 +21,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - attach_workspace:
-          at: .
       - run: |
-          docker image load -i "images/rocm/vs-ffmpeg_rocm.tar"
           echo $DOCKERHUB_PASSWORD | docker login -u lychee0 --password-stdin
           make release-rocm
 
@@ -73,10 +33,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - attach_workspace:
-          at: .
       - run: |
-          docker image load -i "images/cuda/vs-ffmpeg_cuda.tar"
           echo $DOCKERHUB_PASSWORD | docker login -u lychee0 --password-stdin
           make release-dev
 
@@ -88,10 +45,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - attach_workspace:
-          at: .
       - run: |
-          docker image load -i "images/rocm/vs-ffmpeg_rocm.tar"
           echo $DOCKERHUB_PASSWORD | docker login -u lychee0 --password-stdin
           make release-rocm-dev
 
@@ -99,27 +53,17 @@ workflows:
   version: 2
   build_all:
     jobs:
-      - pre-build-ff-cuda
-      - pre-build-ff-rocm
       - build-cuda:
-          requires:
-            - pre-build-ff-cuda
           filters:
             tags:
               only: /^v.*/
             branches:
               ignore: /.*/
       - build-rocm:
-          requires:
-            - pre-build-ff-rocm
           filters:
             tags:
               only: /^v.*/
             branches:
               ignore: /.*/
-      - build-cuda-dev:
-          requires:
-            - pre-build-ff-cuda
-      - build-rocm-dev:
-          requires:
-            - pre-build-ff-rocm
+      - build-cuda-dev
+      - build-rocm-dev

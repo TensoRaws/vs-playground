@@ -1,26 +1,16 @@
 .DEFAULT_GOAL := default
 
 version := v0.2.0
+VS_FFMPEG_DOCKER_VERSION := v0.0.1
 
 .PHONY: lint ## pip install pre-commit
 lint:
 	pre-commit install
 	pre-commit run --all-files
 
-.PHONY: ff
-ff:
-	docker buildx build -f vs-ffmpeg.dockerfile -t vs-ffmpeg .
-	docker tag vs-ffmpeg vs-ffmpeg:latest
-	docker tag vs-ffmpeg vs-ffmpeg:cuda
-
-.PHONY: ff-rocm
-ff-rocm:
-	docker buildx build -f vs-ffmpeg-rocm.dockerfile -t vs-ffmpeg .
-	docker tag vs-ffmpeg vs-ffmpeg:rocm
-
 .PHONY: pt
 pt:
-	docker buildx build -f vs-pytorch.dockerfile -t lychee0/vs-pytorch .
+	docker buildx build -f vs-pytorch.dockerfile -t lychee0/vs-pytorch --build-arg BASE_CONTAINER_TAG=${VS_FFMPEG_DOCKER_VERSION} .
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:latest
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:dev
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:cuda-dev
@@ -42,7 +32,7 @@ pt-release:
 
 .PHONY: pt-rocm
 pt-rocm:
-	docker buildx build -f vs-pytorch-rocm.dockerfile -t lychee0/vs-pytorch .
+	docker buildx build -f vs-pytorch-rocm.dockerfile -t lychee0/vs-pytorch --build-arg BASE_CONTAINER_TAG=${VS_FFMPEG_DOCKER_VERSION} .
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:rocm-dev
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:rocm-${version}
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:rocm
