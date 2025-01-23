@@ -35,6 +35,35 @@ RUN git clone https://github.com/EleonoreMizo/fmtconv && cd fmtconv/build/unix/ 
     ./autogen.sh && ./configure && make -j$(nproc) && make install
 RUN ln -s /usr/local/lib/libfmtconv.so /usr/local/lib/vapoursynth/libfmtconv.so
 
+# HomeOfVapourSynthEvolution's plugins
+# Retinex
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Retinex && cd VapourSynth-Retinex && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# TCanny
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-TCanny && cd VapourSynth-TCanny && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# CTMF
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-CTMF && cd VapourSynth-CTMF && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# CAS
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-CAS && cd VapourSynth-CAS && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# dubhater's plugins
+# mvtools
+RUN apt install nasm libfftw3-dev -y
+RUN git clone https://github.com/dubhater/vapoursynth-mvtools && cd vapoursynth-mvtools && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/libmvtools.so /usr/local/lib/vapoursynth/libmvtools.so
+
+# fillborders
+RUN git clone https://github.com/dubhater/vapoursynth-fillborders && cd vapoursynth-fillborders && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/libfillborders.so /usr/local/lib/vapoursynth/libfillborders.so
+
 ###
 # Install VapourSynth Python plugins
 ###
