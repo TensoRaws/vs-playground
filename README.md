@@ -44,10 +44,10 @@ the playground image has sshd installed, you can ssh into the container to dev
 build [base image](./vs-pytorch.dockerfile) (default for FinalRip) and [playground image](./vs-playground.dockerfile)
 
 ```bash
-make pt && make pg
+make ff && make pt && make pg
 ```
 
-`make pt-rocm && make pg-rocm` for AMD GPU
+`make ff-rocm && make pt-rocm && make pg-rocm` for AMD GPU
 
 ### Reference
 
