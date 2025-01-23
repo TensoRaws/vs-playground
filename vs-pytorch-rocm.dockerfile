@@ -125,6 +125,8 @@ ARG VAPOURSYNTH_VERSION=R70
 RUN wget https://github.com/vapoursynth/vapoursynth/archive/refs/tags/${VAPOURSYNTH_VERSION}.tar.gz && \
   tar -zxvf ${VAPOURSYNTH_VERSION}.tar.gz && mv vapoursynth-${VAPOURSYNTH_VERSION} vapoursynth && cd vapoursynth && \
   ./autogen.sh && ./configure && make -j$(nproc) && make install && ldconfig
+# install vapoursynth python package
+RUN cd vapoursynth && python setup.py install
 
 ###
 # Install FFmpeg with Encoders
@@ -334,17 +336,16 @@ RUN git clone https://github.com/vapoursynth/bestsource.git --depth 1 --recurse-
 RUN apt install autoconf -y
 RUN git clone https://github.com/FFMS/ffms2 && cd ffms2 && \
     ./autogen.sh && CFLAGS=-fPIC CXXFLAGS=-fPIC LDFLAGS="-Wl,-Bsymbolic" ./configure --enable-shared && make -j$(nproc) && make install
+RUN ln -s /usr/local/lib/libffms2.so /usr/local/lib/vapoursynth/libffms2.so
 
 # fmtconv
 RUN git clone https://github.com/EleonoreMizo/fmtconv && cd fmtconv/build/unix/ && \
     ./autogen.sh && ./configure && make -j$(nproc) && make install
+RUN ln -s /usr/local/lib/libfmtconv.so /usr/local/lib/vapoursynth/libfmtconv.so
 
 ###
 # Install VapourSynth Python plugins
 ###
-
-# install vapoursynth
-RUN cd vapoursynth && python setup.py install
 
 # install python packages with specific versions!!!
 RUN pip install numpy==1.26.4
