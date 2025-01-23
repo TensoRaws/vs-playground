@@ -7,6 +7,17 @@ lint:
 	pre-commit install
 	pre-commit run --all-files
 
+.PHONY: ff
+ff:
+	docker buildx build -f vs-ffmpeg.dockerfile -t vs-ffmpeg .
+	docker tag vs-ffmpeg vs-ffmpeg:latest
+	docker tag vs-ffmpeg vs-ffmpeg:cuda
+
+.PHONY: ff-rocm
+ff-rocm:
+	docker buildx build -f vs-ffmpeg-rocm.dockerfile -t vs-ffmpeg .
+	docker tag vs-ffmpeg vs-ffmpeg:rocm
+
 .PHONY: pt
 pt:
 	docker buildx build -f vs-pytorch.dockerfile -t lychee0/vs-pytorch .
