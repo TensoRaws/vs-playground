@@ -4,7 +4,7 @@ jobs:
   build-cuda:
     docker:
       - image: cimg/go:1.17
-    resource_class: large
+    resource_class: small
     steps:
       - checkout
       - setup_remote_docker:
@@ -16,7 +16,7 @@ jobs:
   build-rocm:
     docker:
       - image: cimg/go:1.17
-    resource_class: large
+    resource_class: small
     steps:
       - checkout
       - setup_remote_docker:
@@ -28,7 +28,7 @@ jobs:
   build-cuda-dev:
     docker:
       - image: cimg/go:1.17
-    resource_class: large
+    resource_class: small
     steps:
       - checkout
       - setup_remote_docker:
@@ -40,7 +40,7 @@ jobs:
   build-rocm-dev:
     docker:
       - image: cimg/go:1.17
-    resource_class: large
+    resource_class: small
     steps:
       - checkout
       - setup_remote_docker:
