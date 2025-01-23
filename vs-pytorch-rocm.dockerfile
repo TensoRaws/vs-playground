@@ -303,10 +303,10 @@ RUN cd FFmpeg && \
     --enable-libopenh264 \
     --enable-optimizations \
     #--enable-cuda-llvm \ # ERROR: cuda_llvm requested but not found
-    --enable-nvdec \
-    --enable-nvenc \
-    --enable-cuvid \
-    --enable-cuda \
+    #--enable-nvdec \ # Disable for ROCM
+    #--enable-nvenc \ # Disable for ROCM
+    #--enable-cuvid \ # Disable for ROCM
+    #--enable-cuda \ # Disable for ROCM
     --enable-pthreads \
     --enable-runtime-cpudetect \
     --enable-lto && \
