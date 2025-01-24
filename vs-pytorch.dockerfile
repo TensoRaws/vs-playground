@@ -100,7 +100,10 @@ RUN git clone https://github.com/WolframRhodium/VapourSynth-BM3DCUDA --depth 1 &
     -D CMAKE_CUDA_FLAGS="--threads 0 --use_fast_math --resource-usage -Wno-deprecated-gpu-targets" \
     -D CMAKE_CUDA_ARCHITECTURES="50;61-real;70;75-real;86-real;89-real;90-real" && \
     cmake --build build --verbose && \
-    cmake --install build --verbose --prefix artifact
+    cmake --install build --verbose --prefix /usr/local
+RUN ln -s /usr/local/lib/libbm3dcuda.so /usr/local/lib/vapoursynth/libbm3dcuda.so && \
+    ln -s /usr/local/lib/libbm3dcuda_rtc.so /usr/local/lib/vapoursynth/libbm3dcuda_rtc.so && \
+    ln -s /usr/local/lib/libbm3dcpu.so /usr/local/lib/vapoursynth/libbm3dcpu.so
 
 ###
 # Install VapourSynth Python plugins
