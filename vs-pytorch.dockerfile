@@ -31,6 +31,15 @@ WORKDIR /workspace
 ###
 
 # --- prerequisites ---
+
+RUN apt install -y \
+    autoconf \
+    llvm-15 \
+    nasm \
+    libboost-dev \
+    libxxhash-dev \
+    libfftw3-dev
+
 # jansson
 RUN git clone https://github.com/akheron/jansson --depth 1 && cd jansson && autoreconf -fi && CFLAGS=-fPIC ./configure && \
   make -j$(nproc) && make install
@@ -41,7 +50,6 @@ RUN git clone https://github.com/libarchive/bzip2 --depth 1 && cd bzip2 && \
 
 # --- VapourSynth plugins ---
 # bestsource
-RUN apt install libxxhash-dev -y
 RUN git clone https://github.com/vapoursynth/bestsource.git --depth 1 --recurse-submodules --shallow-submodules --remote-submodules && cd bestsource && \
   CFLAGS=-fPIC meson setup -Denable_plugin=true build && CFLAGS=-fPIC ninja -C build && ninja -C build install
 
@@ -50,7 +58,6 @@ RUN git clone https://github.com/vapoursynth/vs-miscfilters-obsolete --depth 1 &
     mkdir build && cd build && meson ../ && ninja && ninja install
 
 # ffms2
-RUN apt install autoconf -y
 RUN git clone https://github.com/FFMS/ffms2 --depth 1 && cd ffms2 && \
     ./autogen.sh && CFLAGS=-fPIC CXXFLAGS=-fPIC LDFLAGS="-Wl,-Bsymbolic" ./configure --enable-shared && make -j$(nproc) && make install
 RUN ln -s /usr/local/lib/libffms2.so /usr/local/lib/vapoursynth/libffms2.so
@@ -120,14 +127,12 @@ RUN git clone https://github.com/AmusementClub/vs-boxblur --depth 1 --recurse-su
     cmake --install build --prefix /usr/local
 
 # AkarinVS's plugins
-RUN apt install llvm-15 -y
 # libakarin, depends on llvm ver >= 10.0 && < 16
 RUN git clone https://github.com/AkarinVS/vapoursynth-plugin --depth 1 && cd vapoursynth-plugin && \
     mkdir build && cd build && meson ../ && ninja && ninja install
 
 # dubhater's plugins
 # mvtools
-RUN apt install nasm libfftw3-dev -y
 RUN git clone https://github.com/dubhater/vapoursynth-mvtools --depth 1 && cd vapoursynth-mvtools && \
     mkdir build && cd build && meson ../ && ninja && ninja install
 RUN ln -s /usr/local/lib/x86_64-linux-gnu/libmvtools.so /usr/local/lib/vapoursynth/libmvtools.so
@@ -171,7 +176,6 @@ RUN ln -s /usr/local/lib/libbm3dcuda.so /usr/local/lib/vapoursynth/libbm3dcuda.s
     ln -s /usr/local/lib/libbm3dcpu.so /usr/local/lib/vapoursynth/libbm3dcpu.so
 
 # ILS
-RUN apt install -y libcufft-dev-12-4
 RUN git clone https://github.com/WolframRhodium/VapourSynth-ILS --depth 1 && cd VapourSynth-ILS && \
     cmake -S . -B build -G Ninja \
     -D VAPOURSYNTH_INCLUDE_DIRECTORY="/usr/local/include/vapoursynth" \

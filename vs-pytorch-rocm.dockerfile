@@ -68,6 +68,15 @@ WORKDIR /workspace
 ###
 
 # --- prerequisites ---
+
+RUN apt install -y \
+    autoconf \
+    llvm-15 \
+    nasm \
+    libboost-dev \
+    libxxhash-dev \
+    libfftw3-dev
+
 # jansson
 RUN git clone https://github.com/akheron/jansson --depth 1 && cd jansson && autoreconf -fi && CFLAGS=-fPIC ./configure && \
   make -j$(nproc) && make install
@@ -78,12 +87,14 @@ RUN git clone https://github.com/libarchive/bzip2 --depth 1 && cd bzip2 && \
 
 # --- VapourSynth plugins ---
 # bestsource
-RUN apt install libxxhash-dev -y
 RUN git clone https://github.com/vapoursynth/bestsource.git --depth 1 --recurse-submodules --shallow-submodules --remote-submodules && cd bestsource && \
   CFLAGS=-fPIC meson setup -Denable_plugin=true build && CFLAGS=-fPIC ninja -C build && ninja -C build install
 
+# vs-miscfilters
+RUN git clone https://github.com/vapoursynth/vs-miscfilters-obsolete --depth 1 && cd vs-miscfilters-obsolete && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
 # ffms2
-RUN apt install autoconf -y
 RUN git clone https://github.com/FFMS/ffms2 --depth 1 && cd ffms2 && \
     ./autogen.sh && CFLAGS=-fPIC CXXFLAGS=-fPIC LDFLAGS="-Wl,-Bsymbolic" ./configure --enable-shared && make -j$(nproc) && make install
 RUN ln -s /usr/local/lib/libffms2.so /usr/local/lib/vapoursynth/libffms2.so
@@ -110,9 +121,55 @@ RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-CTMF --d
 RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-CAS --depth 1 && cd VapourSynth-CAS && \
     mkdir build && cd build && meson ../ && ninja && ninja install
 
+# AddGrain
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-AddGrain --depth 1 && cd VapourSynth-AddGrain && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# Bilateral
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Bilateral --depth 1 && cd VapourSynth-Bilateral && \
+    ./configure && make -j$(nproc) && make install
+
+# Bwdif
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Bwdif --depth 1 && cd VapourSynth-Bwdif && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# DCTFilter
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-DCTFilter --depth 1 && cd VapourSynth-DCTFilter && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# TTempSmooth
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-TTempSmooth --depth 1 && cd VapourSynth-TTempSmooth && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# EEDI2
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI2 --depth 1 && cd VapourSynth-EEDI2 && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# EEDI3
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI3 --depth 1 && cd VapourSynth-EEDI3 && \
+    mkdir build && cd build && meson -D opencl=false ../ && ninja && ninja install
+
+# AmusementClub's plugins
+# assrender
+RUN git clone https://github.com/AmusementClub/assrender --depth 1 && cd assrender && \
+    mkdir build && cd build && cmake .. && make -j$(nproc) && make install
+
+# vs-boxblur
+RUN git clone https://github.com/AmusementClub/vs-boxblur --depth 1 --recurse-submodules && cd vs-boxblur && \
+    cmake -S . -B build -G Ninja \
+    -D VS_INCLUDE_DIR="/usr/local/include/vapoursynth" \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_CXX_FLAGS_RELEASE="-Wall -ffast-math -march=x86-64-v3" && \
+    cmake --build build --verbose && \
+    cmake --install build --prefix /usr/local
+
+# AkarinVS's plugins
+# libakarin, depends on llvm ver >= 10.0 && < 16
+RUN git clone https://github.com/AkarinVS/vapoursynth-plugin --depth 1 && cd vapoursynth-plugin && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
 # dubhater's plugins
 # mvtools
-RUN apt install nasm libfftw3-dev -y
 RUN git clone https://github.com/dubhater/vapoursynth-mvtools --depth 1 && cd vapoursynth-mvtools && \
     mkdir build && cd build && meson ../ && ninja && ninja install
 RUN ln -s /usr/local/lib/x86_64-linux-gnu/libmvtools.so /usr/local/lib/vapoursynth/libmvtools.so
@@ -128,6 +185,19 @@ RUN ln -s /usr/local/lib/x86_64-linux-gnu/libfillborders.so /usr/local/lib/vapou
 
 # TODO: Support ROCm, temporarily use the CPU version
 
+# AmusementClub's plugins
+# dfttest2
+RUN git clone https://github.com/AmusementClub/vs-dfttest2 --depth 1 --recurse-submodules && cd vs-dfttest2 && \
+    cmake -S . -B build -G Ninja -LA \
+    -D ENABLE_CPU=ON \
+    -D ENABLE_CUDA=OFF \
+    -D ENABLE_HIP=OFF \
+    -D VAPOURSYNTH_INCLUDE_DIRECTORY="/usr/local/include/vapoursynth" \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_CXX_FLAGS="-Wall -ffast-math -march=x86-64-v3" && \
+    cmake --build build --verbose && \
+    cmake --install build --verbose --prefix /usr/local
+
 # WolframRhodium's plugins
 # BM3DCUDA
 RUN git clone https://github.com/WolframRhodium/VapourSynth-BM3DCUDA --depth 1 && cd VapourSynth-BM3DCUDA && \
@@ -141,6 +211,10 @@ RUN git clone https://github.com/WolframRhodium/VapourSynth-BM3DCUDA --depth 1 &
     cmake --build build --verbose && \
     cmake --install build --verbose --prefix /usr/local
 RUN ln -s /usr/local/lib/libbm3dcpu.so /usr/local/lib/vapoursynth/libbm3dcpu.so
+
+RUN cd /usr/local/lib && ls
+RUN cd /usr/local/lib/vapoursynth && ls && exit 1
+
 
 ###
 # Install VapourSynth Python plugins
