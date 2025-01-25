@@ -132,6 +132,15 @@ RUN pip install ccvfi==0.0.1
 
 # ----------- test new plugins -----------
 
+# vs  official plugins
+
+# vs-miscfilters
+RUN git clone https://github.com/vapoursynth/vs-miscfilters-obsolete --depth 1 && cd vs-miscfilters-obsolete && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+
+# --------------------- HomeOfVapourSynthEvolution
+
 # AddGrain
 RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-AddGrain --depth 1 && cd VapourSynth-AddGrain && \
     mkdir build && cd build && meson ../ && ninja && ninja install
@@ -180,6 +189,48 @@ RUN apt install llvm-15 -y
 # libakarin, depends on llvm ver >= 10.0 && < 16
 RUN git clone https://github.com/AkarinVS/vapoursynth-plugin --depth 1 && cd vapoursynth-plugin && \
     mkdir build && cd build && meson ../ && ninja && ninja install
+
+
+# --------------------- AmusementClub
+
+# assrender
+RUN git clone https://github.com/AmusementClub/assrender --depth 1 && cd assrender && \
+    mkdir build && cd build && cmake .. && make -j$(nproc) && make install
+
+# vs-boxblur
+RUN git clone https://github.com/AmusementClub/vs-boxblur --depth 1 --recurse-submodules && cd vs-boxblur && \
+    cmake -S . -B build -G Ninja \
+    -D VS_INCLUDE_DIR="/usr/local/include/vapoursynth" \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_CXX_FLAGS_RELEASE="-Wall -ffast-math -march=x86-64-v3" && \
+    cmake --build build --verbose && \
+    cmake --install build --prefix /usr/local
+
+# ----- CUDA
+
+# ILS
+RUN apt install -y libcufft-dev-12-4
+RUN git clone https://github.com/WolframRhodium/VapourSynth-ILS --depth 1 && cd VapourSynth-ILS && \
+    cmake -S . -B build -G Ninja \
+    -D VAPOURSYNTH_INCLUDE_DIRECTORY="/usr/local/include/vapoursynth" \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_CXX_FLAGS="-Wall -ffast-math -march=x86-64-v3" \
+    -D CMAKE_CUDA_FLAGS="--threads 0 --use_fast_math --resource-usage -Wno-deprecated-gpu-targets" \
+    -D CMAKE_CUDA_ARCHITECTURES="50;52-real;60;61-real;70;75-real;80;86-real;89-real;90-real" && \
+    cmake --build build --verbose
+RUN cp VapourSynth-ILS/build/libils.so /usr/local/lib && \
+    ln -s /usr/local/lib/libils.so /usr/local/lib/vapoursynth/libils.so
+
+RUN git clone https://github.com/AmusementClub/vs-dfttest2 --depth 1 --recurse-submodules && cd vs-dfttest2 && \
+    cmake -S . -B build -G Ninja -LA \
+    -D USE_NVRTC_STATIC=ON \
+    -D VAPOURSYNTH_INCLUDE_DIRECTORY="/usr/local/include/vapoursynth" \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_CXX_FLAGS="-Wall -ffast-math -march=x86-64-v3" \
+    -D CMAKE_CUDA_FLAGS="--threads 0 --use_fast_math --resource-usage -Wno-deprecated-gpu-targets" \
+    -D CMAKE_CUDA_ARCHITECTURES="50;52-real;60;61-real;70;75-real;80;86-real;89-real;90-real" && \
+    cmake --build build --verbose && \
+    cmake --install build --verbose --prefix /usr/local
 
 RUN cd /usr/local/lib && ls
 RUN cd /usr/local/lib/vapoursynth && ls && exit 1
