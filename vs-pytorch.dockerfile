@@ -128,3 +128,58 @@ RUN pip install cupy-cuda12x
 RUN pip install mbfunc==0.0.2
 RUN pip install ccrestoration==0.2.1
 RUN pip install ccvfi==0.0.1
+
+
+# ----------- test new plugins -----------
+
+# AddGrain
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-AddGrain --depth 1 && cd VapourSynth-AddGrain && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# Bilateral
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Bilateral --depth 1 && cd VapourSynth-Bilateral && \
+    ./configure && make -j$(nproc) && make install
+
+# Bwdif
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Bwdif --depth 1 && cd VapourSynth-Bwdif && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# DCTFilter
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-DCTFilter --depth 1 && cd VapourSynth-DCTFilter && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# TTempSmooth
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-TTempSmooth --depth 1 && cd VapourSynth-TTempSmooth && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# EEDI2
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI2 --depth 1 && cd VapourSynth-EEDI2 && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# EEDI3
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI3 --depth 1 && cd VapourSynth-EEDI3 && \
+    mkdir build && cd build && meson -D opencl=false ../ && ninja && ninja install
+
+# --------------------- AkarinVS
+
+# git clone https://github.com/l-smash/l-smash --depth 1
+  #        pushd l-smash
+  #        mv configure configure.old
+  #        sed 's/-Wl,--version-script,liblsmash.ver//g' configure.old >configure
+  #        chmod +x configure
+  #        ./configure --disable-static
+  #        make lib -j2
+  #        sudo make install-lib -j2
+  #        popd
+  #        rm -rf l-smash
+# l-smash 是 vs某些lib 的一个依赖，先装上这玩意
+#RUN git clone https://github.com/l-smash/l-smash --depth 1 && cd l-smash && \
+#    ./configure && make lib -j$(nproc) && make install-lib -j$(nproc)
+
+RUN apt install llvm-15 -y
+# libakarin, depends on llvm ver >= 10.0 && < 16
+RUN git clone https://github.com/AkarinVS/vapoursynth-plugin --depth 1 && cd vapoursynth-plugin && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+RUN cd /usr/local/lib && ls
+RUN cd /usr/local/lib/vapoursynth && ls && exit 1
