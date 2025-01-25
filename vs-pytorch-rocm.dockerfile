@@ -212,10 +212,6 @@ RUN git clone https://github.com/WolframRhodium/VapourSynth-BM3DCUDA --depth 1 &
     cmake --install build --verbose --prefix /usr/local
 RUN ln -s /usr/local/lib/libbm3dcpu.so /usr/local/lib/vapoursynth/libbm3dcpu.so
 
-RUN cd /usr/local/lib && ls
-RUN cd /usr/local/lib/vapoursynth && ls && exit 1
-
-
 ###
 # Install VapourSynth Python plugins
 ###

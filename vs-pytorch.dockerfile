@@ -210,6 +210,3 @@ RUN pip install cupy-cuda12x
 RUN pip install mbfunc==0.0.2
 RUN pip install ccrestoration==0.2.1
 RUN pip install ccvfi==0.0.1
-
-RUN cd /usr/local/lib && ls
-RUN cd /usr/local/lib/vapoursynth && ls && exit 1
