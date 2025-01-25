@@ -3,12 +3,12 @@ ARG BASE_CONTAINER_TAG=latest
 FROM lychee0/vs-ffmpeg-docker:${BASE_CONTAINER_TAG}
 
 ###
-# Set the working directory for ROCM
+# Set the working directory for ROCm
 ###
 WORKDIR /amd
 
 ###
-# Install dependencies for ROCM
+# set up ROCm environment (ROCm 6.1.3)
 ###
 
 # Install necessary dependencies
@@ -67,14 +67,16 @@ WORKDIR /workspace
 # Install VapourSynth C++ plugins
 ###
 
+# --- prerequisites ---
 # jansson
-RUN git clone https://github.com/akheron/jansson && cd jansson && autoreconf -fi && CFLAGS=-fPIC ./configure && \
+RUN git clone https://github.com/akheron/jansson --depth 1 && cd jansson && autoreconf -fi && CFLAGS=-fPIC ./configure && \
   make -j$(nproc) && make install
 
 # bzip2
-RUN git clone https://github.com/libarchive/bzip2 && cd bzip2 && \
+RUN git clone https://github.com/libarchive/bzip2 --depth 1 && cd bzip2 && \
   mkdir build && cd build && cmake .. && make -j$(nproc) && make install
 
+# --- VapourSynth plugins ---
 # bestsource
 RUN apt install libxxhash-dev -y
 RUN git clone https://github.com/vapoursynth/bestsource.git --depth 1 --recurse-submodules --shallow-submodules --remote-submodules && cd bestsource && \
@@ -82,14 +84,63 @@ RUN git clone https://github.com/vapoursynth/bestsource.git --depth 1 --recurse-
 
 # ffms2
 RUN apt install autoconf -y
-RUN git clone https://github.com/FFMS/ffms2 && cd ffms2 && \
+RUN git clone https://github.com/FFMS/ffms2 --depth 1 && cd ffms2 && \
     ./autogen.sh && CFLAGS=-fPIC CXXFLAGS=-fPIC LDFLAGS="-Wl,-Bsymbolic" ./configure --enable-shared && make -j$(nproc) && make install
 RUN ln -s /usr/local/lib/libffms2.so /usr/local/lib/vapoursynth/libffms2.so
 
 # fmtconv
-RUN git clone https://github.com/EleonoreMizo/fmtconv && cd fmtconv/build/unix/ && \
+RUN git clone https://github.com/EleonoreMizo/fmtconv --depth 1 && cd fmtconv/build/unix/ && \
     ./autogen.sh && ./configure && make -j$(nproc) && make install
 RUN ln -s /usr/local/lib/libfmtconv.so /usr/local/lib/vapoursynth/libfmtconv.so
+
+# HomeOfVapourSynthEvolution's plugins
+# Retinex
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Retinex --depth 1 && cd VapourSynth-Retinex && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# TCanny
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-TCanny --depth 1 && cd VapourSynth-TCanny && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# CTMF
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-CTMF --depth 1 && cd VapourSynth-CTMF && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# CAS
+RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-CAS --depth 1 && cd VapourSynth-CAS && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# dubhater's plugins
+# mvtools
+RUN apt install nasm libfftw3-dev -y
+RUN git clone https://github.com/dubhater/vapoursynth-mvtools --depth 1 && cd vapoursynth-mvtools && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libmvtools.so /usr/local/lib/vapoursynth/libmvtools.so
+
+# fillborders
+RUN git clone https://github.com/dubhater/vapoursynth-fillborders --depth 1 && cd vapoursynth-fillborders && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libfillborders.so /usr/local/lib/vapoursynth/libfillborders.so
+
+###
+# Install VapourSynth ROCm plugins
+###
+
+# TODO: Support ROCm, temporarily use the CPU version
+
+# WolframRhodium's plugins
+# BM3DCUDA
+RUN git clone https://github.com/WolframRhodium/VapourSynth-BM3DCUDA --depth 1 && cd VapourSynth-BM3DCUDA && \
+    cmake -S . -B build -G Ninja -LA \
+    -D ENABLE_CPU=ON \
+    -D ENABLE_CUDA=OFF \
+    -D ENABLE_HIP=OFF \
+    -D VAPOURSYNTH_INCLUDE_DIRECTORY="/usr/local/include/vapoursynth" \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_CXX_FLAGS="-Wall -ffast-math -march=x86-64-v3" && \
+    cmake --build build --verbose && \
+    cmake --install build --verbose --prefix /usr/local
+RUN ln -s /usr/local/lib/libbm3dcpu.so /usr/local/lib/vapoursynth/libbm3dcpu.so
 
 ###
 # Install VapourSynth Python plugins
@@ -121,7 +172,3 @@ RUN location=$(pip show torch | grep Location | awk -F ": " '{print $2}') && \
 RUN pip install mbfunc==0.0.2
 RUN pip install ccrestoration==0.2.1
 RUN pip install ccvfi==0.0.1
-
-RUN ls /usr/local/lib
-RUN ls /usr/local/include
-RUN pkg-config --list-all
