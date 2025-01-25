@@ -43,6 +43,38 @@ the playground image has sshd installed, you can ssh into the container to dev
 - user: root
 - password: 123456
 
+### VapourSynth C++ Plugin List
+
+```bash
+bestsource.so
+libaddgrain.so
+libakarin.so
+libassrender.so
+libbilateral.so
+libbm3dcpu.so
+libbm3dcuda.so
+libbm3dcuda_rtc.so
+libboxblur.so
+libbwdif.so
+libcas.so
+libctmf.so
+libdctfilter.so
+libdfttest2_cpu.so
+libdfttest2_cuda.so
+libdfttest2_nvrtc.so
+libeedi2.so
+libeedi3m.so
+libffms2.so
+libfillborders.so
+libfmtconv.so
+libils.so
+libmiscfilters.so
+libmvtools.so
+libretinex.so
+libtcanny.so
+libttempsmooth.so
+```
+
 ### Build
 
 build [image](./vs-pytorch.dockerfile) (default for FinalRip) and [playground image](./vs-playground.dockerfile)
