@@ -5,7 +5,7 @@ FROM lychee0/vs-pytorch:${BASE_CONTAINER_TAG}
 WORKDIR /video
 
 # Install Jupyter
-RUN pip install jupyterlab==4.0.0
+RUN pip install jupyterlab==4.3.4
 
 # Install yuuno
 RUN pip install yuuno==1.4
@@ -24,4 +24,4 @@ EXPOSE $JUPYTER_PORT
 
 EXPOSE 22
 
-CMD service ssh restart ; jupyter lab --ip="*" --port=$JUPYTER_PORT --allow_origin="*" --no-browser --allow-root --ServerApp.token=$JUPYTER_TOKEN
+CMD service ssh restart ; jupyter lab --ip="*" --port=$JUPYTER_PORT --allow_origin="*" --no-browser --allow-root --ServerApp.token=$JUPYTER_TOKEN --FileContentsManager.delete_to_trash=False
