@@ -43,6 +43,18 @@ the playground image has sshd installed, you can ssh into the container to dev
 - user: root
 - password: 123456
 
+### VapourSynth Python Plugin List
+
+```bash
+mbfunc
+ccrestoration
+ccvfi
+vsutil
+mvsfunc
+havsfunc
+JET's funcs
+```
+
 ### VapourSynth C++ Plugin List
 
 ```bash
