@@ -210,3 +210,39 @@ RUN pip install cupy-cuda12x
 RUN pip install mbfunc==0.0.2
 RUN pip install ccrestoration==0.2.1
 RUN pip install ccvfi==0.0.1
+
+
+# ------------------ new plugins ------------------
+
+# removegrain
+RUN git clone https://github.com/vapoursynth/vs-removegrain --depth 1 && cd vs-removegrain && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# dubhater's plugins
+
+#make
+RUN git clone https://github.com/dubhater/vapoursynth-fluxsmooth --depth 1 && cd vapoursynth-fluxsmooth && \
+    ./autogen.sh && CFLAGS=-fPIC ./configure && make -j$(nproc) && make install
+RUN ln -s /usr/local/lib/libfluxsmooth.so /usr/local/lib/vapoursynth/libfluxsmooth.so
+
+# nnedi3
+RUN git clone https://github.com/dubhater/vapoursynth-nnedi3 --depth 1 && cd vapoursynth-nnedi3 && \
+    ./autogen.sh && CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure && make -j$(nproc) && make install
+RUN ln -s /usr/local/lib/libnnedi3.so /usr/local/lib/vapoursynth/libnnedi3.so
+
+# tedgemask
+RUN git clone https://github.com/dubhater/vapoursynth-tedgemask --depth 1 && cd vapoursynth-tedgemask && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libtedgemask.so /usr/local/lib/vapoursynth/libtedgemask.so
+
+# sangnom
+RUN git clone https://github.com/dubhater/vapoursynth-sangnom --depth 1 && cd vapoursynth-sangnom && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libsangnom.so /usr/local/lib/vapoursynth/libsangnom.so
+
+# -------------------------
+
+
+RUN cd /usr/local/lib/x86_64-linux-gnu && ls && exit 1
+RUN cd /usr/local/lib && ls && exit 1
+RUN cd /usr/local/lib/vapoursynth && ls && exit 1
