@@ -293,18 +293,18 @@ RUN pip install vsutil==0.8.0
 # fix import error in my branch
 RUN pip install git+https://github.com/TensoRaws/vs-tools-2.3.0.git
 RUN pip install \
-    vspyplugin \
-    vskernels \
-    vsexprtools \
-    vsrgtools \
-    vsmasktools \
-    vsaa \
-    vsscale \
-    vsdenoise \
-    vsdehalo \
-    vsdeband \
-    vsdeinterlace \
-    vssource
+    vspyplugin==1.3.2 \
+    vskernels==2.4.1 \
+    vsexprtools==1.4.6 \
+    vsrgtools==1.5.1 \
+    vsmasktools==1.1.2 \
+    vsaa==1.8.2 \
+    vsscale==1.9.1 \
+    vsdenoise==2.4.0 \
+    vsdehalo==1.7.2 \
+    vsdeband==1.0.2 \
+    vsdeinterlace==0.5.1 \
+    vssource==0.9.5
 
 # install maven's func package
 RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/mvsfunc.git
