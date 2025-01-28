@@ -75,7 +75,8 @@ RUN apt install -y \
     nasm \
     libboost-dev \
     libxxhash-dev \
-    libfftw3-dev
+    libfftw3-dev \
+    libtbb-dev
 
 # jansson
 RUN git clone https://github.com/akheron/jansson --depth 1 && cd jansson && autoreconf -fi && CFLAGS=-fPIC ./configure && \
@@ -190,10 +191,6 @@ RUN git clone https://github.com/AmusementClub/vs-boxblur --depth 1 --recurse-su
     cmake --install build --prefix /usr/local
 
 # Irrational-Encoding-Wizardry's plugins
-# descale
-RUN git clone https://github.com/Irrational-Encoding-Wizardry/descale --depth 1 && cd descale && \
-    mkdir build && cd build && meson ../ && ninja && ninja install
-
 # RemapFrames
 RUN git clone https://github.com/Irrational-Encoding-Wizardry/Vapoursynth-RemapFrames --depth 1 && cd Vapoursynth-RemapFrames && \
     mkdir build && cd build && meson ../ && ninja && ninja install
@@ -236,6 +233,10 @@ RUN git clone https://github.com/dubhater/vapoursynth-sangnom --depth 1 && cd va
 RUN ln -s /usr/local/lib/x86_64-linux-gnu/libsangnom.so /usr/local/lib/vapoursynth/libsangnom.so
 
 # TensoRaw's plugins
+# descale
+RUN git clone https://github.com/TensoRaws/vapoursynth-descale --depth 1 && cd vapoursynth-descale && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
 # hqdn3d
 RUN git clone https://github.com/TensoRaws/vapoursynth-hqdn3d --depth 1 && cd vapoursynth-hqdn3d && \
     ./autogen.sh && CXXFLAGS=-fPIC ./configure && make -j$(nproc) && make install
@@ -246,10 +247,17 @@ RUN git clone https://github.com/TensoRaws/d2vsource --depth 1 && cd d2vsource &
     ./autogen.sh && CXXFLAGS=-fPIC ./configure && make -j$(nproc) && make install
 RUN ln -s /usr/local/lib/libd2vsource.so /usr/local/lib/vapoursynth/libd2vsource.so
 
-## znedi3
-#RUN git clone https://github.com/TensoRaws/znedi3 --depth 1 --recurse-submodules && cd znedi3 && \
-#    mkdir build && cd build && meson ../ && ninja && ninja install
-#RUN ln -s /usr/local/lib/x86_64-linux-gnu/libvsznedi3.so /usr/local/lib/vapoursynth/libvsznedi3.so
+# znedi3
+RUN git clone https://github.com/TensoRaws/znedi3 --depth 1 --recurse-submodules && cd znedi3 && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libvsznedi3.so /usr/local/lib/vapoursynth/libvsznedi3.so
+
+# placebo
+RUN git clone https://github.com/haasn/libplacebo --depth 1 --recurse-submodules && cd libplacebo && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN git clone https://github.com/TensoRaws/vs-placebo --depth 1 --recurse-submodules && cd vs-placebo && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libplacebo.so /usr/local/lib/vapoursynth/libplacebo.so
 
 ###
 # Install VapourSynth ROCm plugins
@@ -292,9 +300,31 @@ RUN ln -s /usr/local/lib/libbm3dcpu.so /usr/local/lib/vapoursynth/libbm3dcpu.so
 RUN pip install numpy==1.26.4
 RUN pip install opencv-python-headless==4.10.0.82
 
-# install other vs plugins
-RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/mvsfunc.git
+
+# install vsutil
 RUN pip install vsutil==0.8.0
+
+# install Jaded Encoding Thaumaturgy's func package (Why you *** require python >= 3.12?)
+# fix import error in my branch
+RUN pip install git+https://github.com/TensoRaws/vs-tools-2.3.0.git
+RUN pip install \
+    vspyplugin \
+    vskernels \
+    vsexprtools \
+    vsrgtools \
+    vsmasktools \
+    vsaa \
+    vsscale \
+    vsdenoise \
+    vsdehalo \
+    vsdeband \
+    vsdeinterlace \
+    vssource
+
+# install maven's func package
+RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/mvsfunc.git
+
+# install holywu's func package
 RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/havsfunc.git
 
 # install PyTorch

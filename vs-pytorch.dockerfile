@@ -154,10 +154,6 @@ RUN git clone https://github.com/AmusementClub/vs-boxblur --depth 1 --recurse-su
     cmake --install build --prefix /usr/local
 
 # Irrational-Encoding-Wizardry's plugins
-# descale
-RUN git clone https://github.com/Irrational-Encoding-Wizardry/descale --depth 1 && cd descale && \
-    mkdir build && cd build && meson ../ && ninja && ninja install
-
 # RemapFrames
 RUN git clone https://github.com/Irrational-Encoding-Wizardry/Vapoursynth-RemapFrames --depth 1 && cd Vapoursynth-RemapFrames && \
     mkdir build && cd build && meson ../ && ninja && ninja install
@@ -200,6 +196,10 @@ RUN git clone https://github.com/dubhater/vapoursynth-sangnom --depth 1 && cd va
 RUN ln -s /usr/local/lib/x86_64-linux-gnu/libsangnom.so /usr/local/lib/vapoursynth/libsangnom.so
 
 # TensoRaw's plugins
+# descale
+RUN git clone https://github.com/TensoRaws/vapoursynth-descale --depth 1 && cd vapoursynth-descale && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
 # hqdn3d
 RUN git clone https://github.com/TensoRaws/vapoursynth-hqdn3d --depth 1 && cd vapoursynth-hqdn3d && \
     ./autogen.sh && CXXFLAGS=-fPIC ./configure && make -j$(nproc) && make install
@@ -210,10 +210,17 @@ RUN git clone https://github.com/TensoRaws/d2vsource --depth 1 && cd d2vsource &
     ./autogen.sh && CXXFLAGS=-fPIC ./configure && make -j$(nproc) && make install
 RUN ln -s /usr/local/lib/libd2vsource.so /usr/local/lib/vapoursynth/libd2vsource.so
 
-## znedi3
-#RUN git clone https://github.com/TensoRaws/znedi3 --depth 1 --recurse-submodules && cd znedi3 && \
-#    mkdir build && cd build && meson ../ && ninja && ninja install
-#RUN ln -s /usr/local/lib/x86_64-linux-gnu/libvsznedi3.so /usr/local/lib/vapoursynth/libvsznedi3.so
+# znedi3
+RUN git clone https://github.com/TensoRaws/znedi3 --depth 1 --recurse-submodules && cd znedi3 && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libvsznedi3.so /usr/local/lib/vapoursynth/libvsznedi3.so
+
+# placebo
+RUN git clone https://github.com/haasn/libplacebo --depth 1 --recurse-submodules && cd libplacebo && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN git clone https://github.com/TensoRaws/vs-placebo --depth 1 --recurse-submodules && cd vs-placebo && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libplacebo.so /usr/local/lib/vapoursynth/libplacebo.so
 
 ###
 # Install VapourSynth CUDA plugins
@@ -224,6 +231,17 @@ RUN ln -s /usr/local/lib/libd2vsource.so /usr/local/lib/vapoursynth/libd2vsource
 RUN git clone https://github.com/AmusementClub/vs-dfttest2 --depth 1 --recurse-submodules && cd vs-dfttest2 && \
     cmake -S . -B build -G Ninja -LA \
     -D USE_NVRTC_STATIC=ON \
+    -D VAPOURSYNTH_INCLUDE_DIRECTORY="/usr/local/include/vapoursynth" \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_CXX_FLAGS="-Wall -ffast-math -march=x86-64-v3" \
+    -D CMAKE_CUDA_FLAGS="--threads 0 --use_fast_math --resource-usage -Wno-deprecated-gpu-targets" \
+    -D CMAKE_CUDA_ARCHITECTURES="50;52-real;60;61-real;70;75-real;80;86-real;89-real;90-real" && \
+    cmake --build build --verbose && \
+    cmake --install build --verbose --prefix /usr/local
+
+# nlm_cuda
+RUN git clone https://github.com/AmusementClub/vs-nlm-cuda && cd vs-nlm-cuda && \
+    cmake -S . -B build -G Ninja -LA \
     -D VAPOURSYNTH_INCLUDE_DIRECTORY="/usr/local/include/vapoursynth" \
     -D CMAKE_BUILD_TYPE=Release \
     -D CMAKE_CXX_FLAGS="-Wall -ffast-math -march=x86-64-v3" \
@@ -268,9 +286,30 @@ RUN cp VapourSynth-ILS/build/libils.so /usr/local/lib && \
 RUN pip install numpy==1.26.4
 RUN pip install opencv-python-headless==4.10.0.82
 
-# install other vs plugins
-RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/mvsfunc.git
+# install vsutil
 RUN pip install vsutil==0.8.0
+
+# install Jaded Encoding Thaumaturgy's func package (Why you *** require python >= 3.12?)
+# fix import error in my branch
+RUN pip install git+https://github.com/TensoRaws/vs-tools-2.3.0.git
+RUN pip install \
+    vspyplugin \
+    vskernels \
+    vsexprtools \
+    vsrgtools \
+    vsmasktools \
+    vsaa \
+    vsscale \
+    vsdenoise \
+    vsdehalo \
+    vsdeband \
+    vsdeinterlace \
+    vssource
+
+# install maven's func package
+RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/mvsfunc.git
+
+# install holywu's func package
 RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/havsfunc.git
 
 # install PyTorch
@@ -280,7 +319,7 @@ RUN pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url h
 RUN pip install cupy-cuda12x
 
 # install TensoRaws's packages
-RUN pip install mbfunc==0.0.2
+RUN pip install mbfunc==0.0.3
 RUN pip install ccrestoration==0.2.1
 RUN pip install ccvfi==0.0.1
 
@@ -289,4 +328,4 @@ RUN pip install ccvfi==0.0.1
 
 RUN cd /usr/local/lib/x86_64-linux-gnu && ls
 RUN cd /usr/local/lib && ls
-RUN cd /usr/local/lib/vapoursynth && ls && exit 1
+RUN cd /usr/local/lib/vapoursynth && ls
