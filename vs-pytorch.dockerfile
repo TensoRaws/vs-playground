@@ -214,10 +214,25 @@ RUN ln -s /usr/local/lib/libd2vsource.so /usr/local/lib/vapoursynth/libd2vsource
 RUN git clone https://github.com/TensoRaws/znedi3 --depth 1 --recurse-submodules && cd znedi3 && \
     mkdir build && cd build && meson ../ && ninja && ninja install
 RUN ln -s /usr/local/lib/x86_64-linux-gnu/libvsznedi3.so /usr/local/lib/vapoursynth/libvsznedi3.so
+RUN cp znedi3/nnedi3_weights.bin /usr/local/lib && \
+    ln -s /usr/local/lib/nnedi3_weights.bin /usr/local/lib/vapoursynth/nnedi3_weights.bin
 
 # placebo
 RUN git clone https://github.com/haasn/libplacebo --depth 1 --recurse-submodules && cd libplacebo && \
-    mkdir build && cd build && meson ../ && ninja && ninja install
+    mkdir build && cd build && \
+    meson ../ \
+    -D vulkan=disabled \
+    -D vk-proc-addr=disabled \
+    -D vulkan-registry=disabled \
+    -D opengl=disabled \
+    -D gl-proc-addr=disabled \
+    -D d3d11=disabled \
+    -D glslang=disabled \
+    -D shaderc=disabled \
+    -D lcms=disabled \
+    -D dovi=disabled \
+    -D libdovi=disabled && \
+    ninja && ninja install
 RUN git clone https://github.com/TensoRaws/vs-placebo --depth 1 --recurse-submodules && cd vs-placebo && \
     mkdir build && cd build && meson ../ && ninja && ninja install
 RUN ln -s /usr/local/lib/x86_64-linux-gnu/libplacebo.so /usr/local/lib/vapoursynth/libplacebo.so
@@ -322,10 +337,3 @@ RUN pip install cupy-cuda12x
 RUN pip install mbfunc==0.0.3
 RUN pip install ccrestoration==0.2.1
 RUN pip install ccvfi==0.0.1
-
-
-# ------------------ new plugins ------------------
-
-RUN cd /usr/local/lib/x86_64-linux-gnu && ls
-RUN cd /usr/local/lib && ls
-RUN cd /usr/local/lib/vapoursynth && ls
