@@ -153,6 +153,28 @@ RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI2 --
 RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI3 --depth 1 && cd VapourSynth-EEDI3 && \
     mkdir build && cd build && meson -D opencl=false ../ && ninja && ninja install
 
+# HomeOfAviSynthPlusEvolution's plugins
+# neo_FFT3D
+RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_FFT3D --depth 1 && cd neo_FFT3D && \
+    cmake -S . -B build -G Ninja -LA && \
+    cmake --build build --verbose
+RUN cp neo_FFT3D/build/libneo-fft3d.so /usr/local/lib && \
+    ln -s /usr/local/lib/libneo-fft3d.so /usr/local/lib/vapoursynth/libneo-fft3d.so
+
+# neo_DFTTest
+RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_DFTTest --depth 1 && cd neo_DFTTest && \
+    cmake -S . -B build -G Ninja -LA && \
+    cmake --build build --verbose
+RUN cp neo_DFTTest/build/libneo-dfttest.so /usr/local/lib && \
+    ln -s /usr/local/lib/libneo-dfttest.so /usr/local/lib/vapoursynth/libneo-dfttest.so
+
+# neo_f3kdb
+RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb --depth 1 && cd neo_f3kdb && \
+    cmake -S . -B build -G Ninja -LA && \
+    cmake --build build --verbose
+RUN cp neo_f3kdb/build/libneo-f3kdb.so /usr/local/lib && \
+    ln -s /usr/local/lib/libneo-f3kdb.so /usr/local/lib/vapoursynth/libneo-f3kdb.so
+
 # AmusementClub's plugins
 # assrender
 RUN git clone https://github.com/AmusementClub/assrender --depth 1 && cd assrender && \
@@ -166,6 +188,16 @@ RUN git clone https://github.com/AmusementClub/vs-boxblur --depth 1 --recurse-su
     -D CMAKE_CXX_FLAGS_RELEASE="-Wall -ffast-math -march=x86-64-v3" && \
     cmake --build build --verbose && \
     cmake --install build --prefix /usr/local
+
+# Irrational-Encoding-Wizardry's plugins
+# descale
+RUN git clone https://github.com/Irrational-Encoding-Wizardry/descale --depth 1 && cd descale && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# RemapFrames
+RUN git clone https://github.com/Irrational-Encoding-Wizardry/Vapoursynth-RemapFrames --depth 1 && cd Vapoursynth-RemapFrames && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/vapoursynth/libremapframes.so /usr/local/lib/vapoursynth/libremapframes.so
 
 # AkarinVS's plugins
 # libakarin, depends on llvm ver >= 10.0 && < 16
@@ -202,6 +234,22 @@ RUN ln -s /usr/local/lib/x86_64-linux-gnu/libtedgemask.so /usr/local/lib/vapours
 RUN git clone https://github.com/dubhater/vapoursynth-sangnom --depth 1 && cd vapoursynth-sangnom && \
     mkdir build && cd build && meson ../ && ninja && ninja install
 RUN ln -s /usr/local/lib/x86_64-linux-gnu/libsangnom.so /usr/local/lib/vapoursynth/libsangnom.so
+
+# TensoRaw's plugins
+# hqdn3d
+RUN git clone https://github.com/TensoRaws/vapoursynth-hqdn3d --depth 1 && cd vapoursynth-hqdn3d && \
+    ./autogen.sh && CXXFLAGS=-fPIC ./configure && make -j$(nproc) && make install
+RUN ln -s /usr/local/lib/libhqdn3d.so /usr/local/lib/vapoursynth/libhqdn3d.so
+
+# d2vsource
+RUN git clone https://github.com/TensoRaws/d2vsource --depth 1 && cd d2vsource && \
+    ./autogen.sh && CXXFLAGS=-fPIC ./configure && make -j$(nproc) && make install
+RUN ln -s /usr/local/lib/libd2vsource.so /usr/local/lib/vapoursynth/libd2vsource.so
+
+## znedi3
+#RUN git clone https://github.com/TensoRaws/znedi3 --depth 1 --recurse-submodules && cd znedi3 && \
+#    mkdir build && cd build && meson ../ && ninja && ninja install
+#RUN ln -s /usr/local/lib/x86_64-linux-gnu/libvsznedi3.so /usr/local/lib/vapoursynth/libvsznedi3.so
 
 ###
 # Install VapourSynth ROCm plugins
