@@ -238,8 +238,43 @@ RUN pip install ccvfi==0.0.1
 
 # ------------------ new plugins ------------------
 
+# -------------- Irrational-Encoding-Wizardry
+
+# descale
+RUN git clone https://github.com/Irrational-Encoding-Wizardry/descale --depth 1 && cd descale && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# RemapFrames
+RUN git clone https://github.com/Irrational-Encoding-Wizardry/Vapoursynth-RemapFrames --depth 1 && cd Vapoursynth-RemapFrames && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/vapoursynth/libremapframes.so /usr/local/lib/vapoursynth/libremapframes.so
 
 
-RUN cd /usr/local/lib/x86_64-linux-gnu && ls && exit 1
-RUN cd /usr/local/lib && ls && exit 1
+# -------------- HomeOfAviSynthPlusEvolution
+
+RUN apt install -y libtbb-dev
+# neo_FFT3D
+RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_FFT3D --depth 1 && cd neo_FFT3D && \
+    cmake -S . -B build -G Ninja -LA && \
+    cmake --build build --verbose
+RUN cp neo_FFT3D/build/libneo-fft3d.so /usr/local/lib && \
+    ln -s /usr/local/lib/libneo-fft3d.so /usr/local/lib/vapoursynth/libneo-fft3d.so
+
+# neo_DFTTest
+RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_DFTTest --depth 1 && cd neo_DFTTest && \
+    cmake -S . -B build -G Ninja -LA && \
+    cmake --build build --verbose
+RUN cp neo_DFTTest/build/libneo-dfttest.so /usr/local/lib && \
+    ln -s /usr/local/lib/libneo-dfttest.so /usr/local/lib/vapoursynth/libneo-dfttest.so
+
+# neo_f3kdb
+RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb --depth 1 && cd neo_f3kdb && \
+    cmake -S . -B build -G Ninja -LA && \
+    cmake --build build --verbose
+RUN cp neo_f3kdb/build/libneo-f3kdb.so /usr/local/lib && \
+    ln -s /usr/local/lib/libneo-f3kdb.so /usr/local/lib/vapoursynth/libneo-f3kdb.so
+
+RUN find / -name "*dfttest*"
+RUN cd /usr/local/lib/x86_64-linux-gnu && ls
+RUN cd /usr/local/lib && ls
 RUN cd /usr/local/lib/vapoursynth && ls && exit 1
