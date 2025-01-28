@@ -104,6 +104,10 @@ RUN git clone https://github.com/EleonoreMizo/fmtconv --depth 1 && cd fmtconv/bu
     ./autogen.sh && ./configure && make -j$(nproc) && make install
 RUN ln -s /usr/local/lib/libfmtconv.so /usr/local/lib/vapoursynth/libfmtconv.so
 
+# removegrain
+RUN git clone https://github.com/vapoursynth/vs-removegrain --depth 1 && cd vs-removegrain && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
 # HomeOfVapourSynthEvolution's plugins
 # Retinex
 RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Retinex --depth 1 && cd VapourSynth-Retinex && \
@@ -178,6 +182,26 @@ RUN ln -s /usr/local/lib/x86_64-linux-gnu/libmvtools.so /usr/local/lib/vapoursyn
 RUN git clone https://github.com/dubhater/vapoursynth-fillborders --depth 1 && cd vapoursynth-fillborders && \
     mkdir build && cd build && meson ../ && ninja && ninja install
 RUN ln -s /usr/local/lib/x86_64-linux-gnu/libfillborders.so /usr/local/lib/vapoursynth/libfillborders.so
+
+# flux
+RUN git clone https://github.com/dubhater/vapoursynth-fluxsmooth --depth 1 && cd vapoursynth-fluxsmooth && \
+    ./autogen.sh && CFLAGS=-fPIC ./configure && make -j$(nproc) && make install
+RUN ln -s /usr/local/lib/libfluxsmooth.so /usr/local/lib/vapoursynth/libfluxsmooth.so
+
+# nnedi3
+RUN git clone https://github.com/dubhater/vapoursynth-nnedi3 --depth 1 && cd vapoursynth-nnedi3 && \
+    ./autogen.sh && CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure && make -j$(nproc) && make install
+RUN ln -s /usr/local/lib/libnnedi3.so /usr/local/lib/vapoursynth/libnnedi3.so
+
+# tedgemask
+RUN git clone https://github.com/dubhater/vapoursynth-tedgemask --depth 1 && cd vapoursynth-tedgemask && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libtedgemask.so /usr/local/lib/vapoursynth/libtedgemask.so
+
+# sangnom
+RUN git clone https://github.com/dubhater/vapoursynth-sangnom --depth 1 && cd vapoursynth-sangnom && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libsangnom.so /usr/local/lib/vapoursynth/libsangnom.so
 
 ###
 # Install VapourSynth ROCm plugins
