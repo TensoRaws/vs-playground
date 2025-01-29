@@ -75,7 +75,8 @@ RUN apt install -y \
     nasm \
     libboost-dev \
     libxxhash-dev \
-    libfftw3-dev
+    libfftw3-dev \
+    libtbb-dev
 
 # jansson
 RUN git clone https://github.com/akheron/jansson --depth 1 && cd jansson && autoreconf -fi && CFLAGS=-fPIC ./configure && \
@@ -103,6 +104,10 @@ RUN ln -s /usr/local/lib/libffms2.so /usr/local/lib/vapoursynth/libffms2.so
 RUN git clone https://github.com/EleonoreMizo/fmtconv --depth 1 && cd fmtconv/build/unix/ && \
     ./autogen.sh && ./configure && make -j$(nproc) && make install
 RUN ln -s /usr/local/lib/libfmtconv.so /usr/local/lib/vapoursynth/libfmtconv.so
+
+# removegrain
+RUN git clone https://github.com/vapoursynth/vs-removegrain --depth 1 && cd vs-removegrain && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
 
 # HomeOfVapourSynthEvolution's plugins
 # Retinex
@@ -149,6 +154,28 @@ RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI2 --
 RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI3 --depth 1 && cd VapourSynth-EEDI3 && \
     mkdir build && cd build && meson -D opencl=false ../ && ninja && ninja install
 
+# HomeOfAviSynthPlusEvolution's plugins
+# neo_FFT3D
+RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_FFT3D --depth 1 && cd neo_FFT3D && \
+    cmake -S . -B build -G Ninja -LA && \
+    cmake --build build --verbose
+RUN cp neo_FFT3D/build/libneo-fft3d.so /usr/local/lib && \
+    ln -s /usr/local/lib/libneo-fft3d.so /usr/local/lib/vapoursynth/libneo-fft3d.so
+
+# neo_DFTTest
+RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_DFTTest --depth 1 && cd neo_DFTTest && \
+    cmake -S . -B build -G Ninja -LA && \
+    cmake --build build --verbose
+RUN cp neo_DFTTest/build/libneo-dfttest.so /usr/local/lib && \
+    ln -s /usr/local/lib/libneo-dfttest.so /usr/local/lib/vapoursynth/libneo-dfttest.so
+
+# neo_f3kdb
+RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb --depth 1 && cd neo_f3kdb && \
+    cmake -S . -B build -G Ninja -LA && \
+    cmake --build build --verbose
+RUN cp neo_f3kdb/build/libneo-f3kdb.so /usr/local/lib && \
+    ln -s /usr/local/lib/libneo-f3kdb.so /usr/local/lib/vapoursynth/libneo-f3kdb.so
+
 # AmusementClub's plugins
 # assrender
 RUN git clone https://github.com/AmusementClub/assrender --depth 1 && cd assrender && \
@@ -162,6 +189,12 @@ RUN git clone https://github.com/AmusementClub/vs-boxblur --depth 1 --recurse-su
     -D CMAKE_CXX_FLAGS_RELEASE="-Wall -ffast-math -march=x86-64-v3" && \
     cmake --build build --verbose && \
     cmake --install build --prefix /usr/local
+
+# Irrational-Encoding-Wizardry's plugins
+# RemapFrames
+RUN git clone https://github.com/Irrational-Encoding-Wizardry/Vapoursynth-RemapFrames --depth 1 && cd Vapoursynth-RemapFrames && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/vapoursynth/libremapframes.so /usr/local/lib/vapoursynth/libremapframes.so
 
 # AkarinVS's plugins
 # libakarin, depends on llvm ver >= 10.0 && < 16
@@ -178,6 +211,68 @@ RUN ln -s /usr/local/lib/x86_64-linux-gnu/libmvtools.so /usr/local/lib/vapoursyn
 RUN git clone https://github.com/dubhater/vapoursynth-fillborders --depth 1 && cd vapoursynth-fillborders && \
     mkdir build && cd build && meson ../ && ninja && ninja install
 RUN ln -s /usr/local/lib/x86_64-linux-gnu/libfillborders.so /usr/local/lib/vapoursynth/libfillborders.so
+
+# flux
+RUN git clone https://github.com/dubhater/vapoursynth-fluxsmooth --depth 1 && cd vapoursynth-fluxsmooth && \
+    ./autogen.sh && CFLAGS=-fPIC ./configure && make -j$(nproc) && make install
+RUN ln -s /usr/local/lib/libfluxsmooth.so /usr/local/lib/vapoursynth/libfluxsmooth.so
+
+# nnedi3
+RUN git clone https://github.com/dubhater/vapoursynth-nnedi3 --depth 1 && cd vapoursynth-nnedi3 && \
+    ./autogen.sh && CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure && make -j$(nproc) && make install
+RUN ln -s /usr/local/lib/libnnedi3.so /usr/local/lib/vapoursynth/libnnedi3.so
+
+# tedgemask
+RUN git clone https://github.com/dubhater/vapoursynth-tedgemask --depth 1 && cd vapoursynth-tedgemask && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libtedgemask.so /usr/local/lib/vapoursynth/libtedgemask.so
+
+# sangnom
+RUN git clone https://github.com/dubhater/vapoursynth-sangnom --depth 1 && cd vapoursynth-sangnom && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libsangnom.so /usr/local/lib/vapoursynth/libsangnom.so
+
+# TensoRaw's plugins
+# descale
+RUN git clone https://github.com/TensoRaws/vapoursynth-descale --depth 1 && cd vapoursynth-descale && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+
+# hqdn3d
+RUN git clone https://github.com/TensoRaws/vapoursynth-hqdn3d --depth 1 && cd vapoursynth-hqdn3d && \
+    ./autogen.sh && CXXFLAGS=-fPIC ./configure && make -j$(nproc) && make install
+RUN ln -s /usr/local/lib/libhqdn3d.so /usr/local/lib/vapoursynth/libhqdn3d.so
+
+# d2vsource
+RUN git clone https://github.com/TensoRaws/d2vsource --depth 1 && cd d2vsource && \
+    ./autogen.sh && CXXFLAGS=-fPIC ./configure && make -j$(nproc) && make install
+RUN ln -s /usr/local/lib/libd2vsource.so /usr/local/lib/vapoursynth/libd2vsource.so
+
+# znedi3
+RUN git clone https://github.com/TensoRaws/znedi3 --depth 1 --recurse-submodules && cd znedi3 && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libvsznedi3.so /usr/local/lib/vapoursynth/libvsznedi3.so
+RUN cp znedi3/nnedi3_weights.bin /usr/local/lib && \
+    ln -s /usr/local/lib/nnedi3_weights.bin /usr/local/lib/vapoursynth/nnedi3_weights.bin
+
+# placebo
+RUN git clone https://github.com/haasn/libplacebo --depth 1 --recurse-submodules && cd libplacebo && \
+    mkdir build && cd build && \
+    meson ../ \
+    -D vulkan=disabled \
+    -D vk-proc-addr=disabled \
+    -D vulkan-registry=disabled \
+    -D opengl=disabled \
+    -D gl-proc-addr=disabled \
+    -D d3d11=disabled \
+    -D glslang=disabled \
+    -D shaderc=disabled \
+    -D lcms=disabled \
+    -D dovi=disabled \
+    -D libdovi=disabled && \
+    ninja && ninja install
+RUN git clone https://github.com/TensoRaws/vs-placebo --depth 1 --recurse-submodules && cd vs-placebo && \
+    mkdir build && cd build && meson ../ && ninja && ninja install
+RUN ln -s /usr/local/lib/x86_64-linux-gnu/libplacebo.so /usr/local/lib/vapoursynth/libplacebo.so
 
 ###
 # Install VapourSynth ROCm plugins
@@ -220,9 +315,31 @@ RUN ln -s /usr/local/lib/libbm3dcpu.so /usr/local/lib/vapoursynth/libbm3dcpu.so
 RUN pip install numpy==1.26.4
 RUN pip install opencv-python-headless==4.10.0.82
 
-# install other vs plugins
-RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/mvsfunc.git
+
+# install vsutil
 RUN pip install vsutil==0.8.0
+
+# install Jaded Encoding Thaumaturgy's func package (Why you *** require python >= 3.12?)
+# fix import error in my branch
+RUN pip install git+https://github.com/TensoRaws/vs-tools-2.3.0.git
+RUN pip install \
+    vspyplugin==1.3.2 \
+    vskernels==2.4.1 \
+    vsexprtools==1.4.6 \
+    vsrgtools==1.5.1 \
+    vsmasktools==1.1.2 \
+    vsaa==1.8.2 \
+    vsscale==1.9.1 \
+    vsdenoise==2.4.0 \
+    vsdehalo==1.7.2 \
+    vsdeband==1.0.2 \
+    vsdeinterlace==0.5.1 \
+    vssource==0.9.5
+
+# install maven's func package
+RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/mvsfunc.git
+
+# install holywu's func package
 RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/havsfunc.git
 
 # install PyTorch
@@ -239,6 +356,6 @@ RUN location=$(pip show torch | grep Location | awk -F ": " '{print $2}') && \
     cp /opt/rocm/lib/libhsa-runtime64.so.1.2 libhsa-runtime64.so
 
 # install TensoRaws's packages
-RUN pip install mbfunc==0.0.2
+RUN pip install mbfunc==0.0.3
 RUN pip install ccrestoration==0.2.1
 RUN pip install ccvfi==0.0.1
