@@ -90,7 +90,6 @@ libneo-dfttest.so
 libneo-f3kdb.so
 libneo-fft3d.so
 libnnedi3.so
-libplacebo.so
 libremapframes.so
 libremovegrain.so
 libretinex.so
@@ -98,7 +97,6 @@ libsangnom.so
 libtcanny.so
 libtedgemask.so
 libttempsmooth.so
-libvs_placebo.so
 libvsnlm_cuda.so
 libvsznedi3.so
 ```
