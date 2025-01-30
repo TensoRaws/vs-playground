@@ -281,7 +281,7 @@ RUN cp VapourSynth-ILS/build/libils.so /usr/local/lib && \
 # install python packages with specific versions!!!
 RUN pip install \
     numpy==1.26.4 \
-    opencv-python-headless==4.10.0.82
+    opencv-python==4.10.0.84
 
 # install vsutil
 RUN pip install vsutil==0.8.0

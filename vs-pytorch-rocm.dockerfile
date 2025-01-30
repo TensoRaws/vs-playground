@@ -295,7 +295,7 @@ RUN ln -s /usr/local/lib/libbm3dcpu.so /usr/local/lib/vapoursynth/libbm3dcpu.so
 # install python packages with specific versions!!!
 RUN pip install \
     numpy==1.26.4 \
-    opencv-python-headless==4.10.0.82
+    opencv-python==4.10.0.84
 
 # install vsutil
 RUN pip install vsutil==0.8.0
