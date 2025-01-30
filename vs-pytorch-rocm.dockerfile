@@ -324,11 +324,18 @@ RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/mvsfunc.git
 RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/havsfunc.git
 
 # install PyTorch
-RUN wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1.3/torch-2.1.2%2Brocm6.1.3-cp310-cp310-linux_x86_64.whl
-RUN wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1.3/torchvision-0.16.1%2Brocm6.1.3-cp310-cp310-linux_x86_64.whl
-RUN wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1.3/pytorch_triton_rocm-2.1.0%2Brocm6.1.3.4d510c3a44-cp310-cp310-linux_x86_64.whl
-RUN pip install torch-2.1.2+rocm6.1.3-cp310-cp310-linux_x86_64.whl torchvision-0.16.1+rocm6.1.3-cp310-cp310-linux_x86_64.whl pytorch_triton_rocm-2.1.0+rocm6.1.3.4d510c3a44-cp310-cp310-linux_x86_64.whl
 #RUN pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.1
+RUN wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1.3/torch-2.1.2%2Brocm6.1.3-cp310-cp310-linux_x86_64.whl && \
+    wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1.3/torchvision-0.16.1%2Brocm6.1.3-cp310-cp310-linux_x86_64.whl && \
+    wget https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1.3/pytorch_triton_rocm-2.1.0%2Brocm6.1.3.4d510c3a44-cp310-cp310-linux_x86_64.whl && \
+    pip install \
+    torch-2.1.2+rocm6.1.3-cp310-cp310-linux_x86_64.whl \
+    torchvision-0.16.1+rocm6.1.3-cp310-cp310-linux_x86_64.whl \
+    pytorch_triton_rocm-2.1.0+rocm6.1.3.4d510c3a44-cp310-cp310-linux_x86_64.whl && \
+    rm -f \
+    torch-2.1.2+rocm6.1.3-cp310-cp310-linux_x86_64.whl \
+    torchvision-0.16.1+rocm6.1.3-cp310-cp310-linux_x86_64.whl \
+    pytorch_triton_rocm-2.1.0+rocm6.1.3.4d510c3a44-cp310-cp310-linux_x86_64.whl
 
 # Locate the torch library directory, HACK
 RUN location=$(pip show torch | grep Location | awk -F ": " '{print $2}') && \

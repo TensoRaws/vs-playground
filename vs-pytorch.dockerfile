@@ -14,7 +14,8 @@ WORKDIR /cuda
 RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb && \
     dpkg -i cuda-keyring_1.1-1_all.deb && \
     apt update && \
-    apt install -y cuda-nvcc-12-4 cuda-cudart-dev-12-4 cuda-nvrtc-dev-12-4 libcufft-dev-12-4
+    apt install -y cuda-nvcc-12-4 cuda-cudart-dev-12-4 cuda-nvrtc-dev-12-4 libcufft-dev-12-4 && \
+    apt clean
 
 # set up environment variables
 ENV PATH=/usr/local/cuda/bin:${PATH}
@@ -309,7 +310,8 @@ RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/mvsfunc.git
 RUN pip install git+https://github.com/HomeOfVapourSynthEvolution/havsfunc.git
 
 # install PyTorch
-RUN pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121
+RUN pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121 && \
+    pip cache purge
 
 # install CuPy
 RUN pip install cupy-cuda12x
