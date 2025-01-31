@@ -1,0 +1,1 @@
+ffmpeg -i - -pix_fmt yuv420p10le -c:v libx265 -crf 16 FINALRIP_ENCODED_CLIP.mkv
