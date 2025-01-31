@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := default
 
 version := v0.2.0
-VS_FFMPEG_DOCKER_VERSION := dev
+VS_FFMPEG_DOCKER_VERSION := v0.1.0
 
 .PHONY: lint ## pip install pre-commit
 lint:
