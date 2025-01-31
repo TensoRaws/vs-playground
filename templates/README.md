@@ -1,31 +1,30 @@
 # Templates
 
-put your _vs script_ & _ffmpeg param_ templates here
+put your _VS Script_ & _Encode Param_ templates here
 
-- for _vs script_ template, use `.py` extension
-- for _ffmpeg param_ template, use `.txt` extension
+- for _VS Script_ template, use `.py` extension
+- for _Encode Param_ template, use `.txt` extension
 
 #### Note:
 
-for _vs script_ template, you should use `os.getenv("FINALRIP_SOURCE")` to get the real source file path in the FinalRip container
+for _VS Script_ template, you should use `os.getenv("FINALRIP_SOURCE")` to get the real source file path in the FinalRip container
 
 ```python
 if os.getenv("FINALRIP_SOURCE"):
     clip = core.bs.VideoSource(source=os.getenv("FINALRIP_SOURCE"))
+    # clip = core.bs.VideoSource(source="FINALRIP_SOURCE.mkv")
 else:
     clip = core.bs.VideoSource(source="s.mkv")
 ```
 
-for _ffmpeg param_ template, you should use `-i -` to read from stdin and don't add any output file path
+for _Encode Param_ template, you should use `-i -` to read from stdin, and specify the output file path `FINALRIP_ENCODED_CLIP.mkv`
 
-```txt
-ffmpeg -i - -vcodec libx265 -crf 16
+```bash
+ffmpeg -i - -pix_fmt yuv420p10le -c:v libx265 -crf 16 FINALRIP_ENCODED_CLIP.mkv
 ```
 
-FinalRip will auto complete the command:
+FinalRip will auto complete the command (encode.py is the _VS Script_ template file):
 
-```txt
-vspipe -c y4m encode.py - | ffmpeg -i - -vcodec libx265 -crf 16 encoded.mkv
+```bash
+vspipe -c y4m encode.py - | ffmpeg -i - -pix_fmt yuv420p10le -c:v libx265 -crf 16 FINALRIP_ENCODED_CLIP.mkv
 ```
-
-- encode.py is the _vs script_ template file and encoded.mkv is the output file path
