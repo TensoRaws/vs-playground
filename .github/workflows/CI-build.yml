@@ -7,7 +7,10 @@ on:
     paths-ignore:
       - "**.md"
       - LICENSE
-
+  pull_request:
+    paths-ignore:
+      - "**.md"
+      - LICENSE
   workflow_dispatch:
 
 jobs:
@@ -31,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           file: vs-ffmpeg-base.dockerfile
           tags: lychee0/vs-ffmpeg-base:dev
 
@@ -39,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           file: vs-pytorch.dockerfile
           tags: lychee0/vs-pytorch:dev
 
@@ -47,6 +50,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           file: vs-playground.dockerfile
           tags: lychee0/vs-playground:dev
