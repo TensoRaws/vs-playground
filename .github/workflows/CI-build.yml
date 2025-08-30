@@ -48,7 +48,6 @@ jobs:
           platforms: linux/amd64
           file: vs-ffmpeg-base.dockerfile
           tags: ${{ steps.meta0.outputs.tags }}
-          load: true
 
       - name: Docker meta vs-pytorch
         id: meta1
