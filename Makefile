@@ -1,5 +1,4 @@
 .DEFAULT_GOAL := default
-VS_FFMPEG_DOCKER_VERSION := latest
 
 .PHONY: lint
 lint:
@@ -14,7 +13,7 @@ ff:
 
 .PHONY: pt
 pt:
-	docker buildx build -f vs-pytorch.dockerfile -t lychee0/vs-pytorch --build-arg BASE_CONTAINER_TAG=${VS_FFMPEG_DOCKER_VERSION} .
+	docker buildx build -f vs-pytorch.dockerfile -t lychee0/vs-pytorch --build-arg BASE_CONTAINER_TAG=latest .
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:latest
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:dev
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:cuda-dev
