@@ -46,6 +46,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
+          push: ${{ github.event_name != 'pull_request' }}
           file: vs-ffmpeg-base.dockerfile
           tags: ${{ steps.meta0.outputs.tags }}
 
@@ -66,7 +67,6 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           file: vs-pytorch.dockerfile
           tags: ${{ steps.meta1.outputs.tags }}
-          load: true
           build-args: |
             BASE_CONTAINER_TAG=dev
 
@@ -87,6 +87,5 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           file: vs-playground.dockerfile
           tags: ${{ steps.meta2.outputs.tags }}
-          load: true
           build-args: |
             BASE_CONTAINER_TAG=dev
