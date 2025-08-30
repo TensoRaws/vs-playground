@@ -30,26 +30,55 @@ jobs:
           username: lychee0
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Docker meta vs-ffmpeg-base
+        id: meta0
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            lychee0/vs-ffmpeg-base
+          tags: |
+            dev
+
       - name: Build vs-ffmpeg-base
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           file: vs-ffmpeg-base.dockerfile
-          tags: lychee0/vs-ffmpeg-base:dev
+          tags: ${{ steps.meta0.outputs.tags }}
+
+      - name: Docker meta vs-pytorch
+        id: meta1
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            lychee0/vs-pytorch
+          tags: |
+            dev
+            cuda-dev
 
       - name: Build vs-pytorch
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           file: vs-pytorch.dockerfile
-          tags: lychee0/vs-pytorch:dev
+          tags: ${{ steps.meta1.outputs.tags }}
+
+      - name: Docker meta vs-playground
+        id: meta2
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            lychee0/vs-playground
+          tags: |
+            dev
+            cuda-dev
 
       - name: Build vs-playground
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           file: vs-playground.dockerfile
-          tags: lychee0/vs-playground:dev
+          tags: ${{ steps.meta2.outputs.tags }}
