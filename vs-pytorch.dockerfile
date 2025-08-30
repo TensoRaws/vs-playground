@@ -120,21 +120,21 @@ RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI3 --
 
 # HomeOfAviSynthPlusEvolution's plugins
 # neo_FFT3D
-RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_FFT3D --depth 1 && cd neo_FFT3D && \
+RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_FFT3D && cd neo_FFT3D && \
     cmake -S . -B build -G Ninja -LA && \
     cmake --build build --verbose
 RUN cp neo_FFT3D/build/libneo-fft3d.so /usr/local/lib && \
     ln -s /usr/local/lib/libneo-fft3d.so /usr/local/lib/vapoursynth/libneo-fft3d.so
 
 # neo_DFTTest
-RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_DFTTest --depth 1 && cd neo_DFTTest && \
+RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_DFTTest && cd neo_DFTTest && \
     cmake -S . -B build -G Ninja -LA && \
     cmake --build build --verbose
 RUN cp neo_DFTTest/build/libneo-dfttest.so /usr/local/lib && \
     ln -s /usr/local/lib/libneo-dfttest.so /usr/local/lib/vapoursynth/libneo-dfttest.so
 
 # neo_f3kdb
-RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb --depth 1 && cd neo_f3kdb && \
+RUN git clone https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb && cd neo_f3kdb && git checkout ad9fa1a11412ab46199d3b8e7cc2e5a89f1d5d1a && \
     cmake -S . -B build -G Ninja -LA && \
     cmake --build build --verbose
 RUN cp neo_f3kdb/build/libneo-f3kdb.so /usr/local/lib && \
