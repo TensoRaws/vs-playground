@@ -11,8 +11,7 @@ dev with docker and jupyter notebook!
 ### Preparations
 
 - docker and docker-compose
-- Nvidia GPU / AMD GPU with ROCm support (7000 series on WSL2)
-- GPU container runtime (optional)
+- Nvidia GPU and GPU container runtime (optional)
 - make (optional)
 
 ### Start
@@ -20,8 +19,6 @@ dev with docker and jupyter notebook!
 ```bash
 make dev
 ```
-
-`make dev-rocm` for AMD GPU
 
 open `http://localhost:1145` in your browser, default password is `114514`
 
@@ -108,8 +105,6 @@ build [image](./vs-pytorch.dockerfile) (default for FinalRip) and [playground im
 ```bash
 make pt && make pg
 ```
-
-`make pt-rocm && make pg-rocm` for AMD GPU
 
 ### Reference
 
