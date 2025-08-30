@@ -1,11 +1,14 @@
-name: Release
+name: Docker Build CI
 
 on:
-  workflow_dispatch:
-
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
+      - LICENSE
+
+  workflow_dispatch:
 
 jobs:
   docker:
@@ -24,31 +27,26 @@ jobs:
           username: lychee0
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            lychee0/vs-ffmpeg-base
-          tags: |
-            latest
-            ${{ github.ref_name }}
-
       - name: Build vs-ffmpeg-base
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
           push: true
           file: vs-ffmpeg-base.dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: lychee0/vs-ffmpeg-base:dev
 
-  github:
-    needs: [docker]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+      - name: Build vs-pytorch
+        uses: docker/build-push-action@v6
         with:
-          submodules: recursive
+          platforms: linux/amd64
+          push: true
+          file: vs-pytorch.dockerfile
+          tags: lychee0/vs-pytorch:dev
 
-      - name: Release
-        uses: softprops/action-gh-release@v2
+      - name: Build vs-playground
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64
+          push: true
+          file: vs-playground.dockerfile
+          tags: lychee0/vs-playground:dev

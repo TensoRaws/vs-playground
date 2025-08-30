@@ -1,6 +1,6 @@
 ARG BASE_CONTAINER_TAG=latest
 
-FROM lychee0/vs-ffmpeg-docker:${BASE_CONTAINER_TAG}
+FROM lychee0/vs-ffmpeg-base:${BASE_CONTAINER_TAG}
 
 ###
 # Set the working directory for ROCm

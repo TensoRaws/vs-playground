@@ -17,12 +17,12 @@ jobs:
   lint:
     strategy:
       matrix:
-        os-version: ["ubuntu-22.04"]
-        python-version: ["3.10"]
+        os-version: ["ubuntu-latest"]
+        python-version: ["3.11"]
 
     runs-on: ${{ matrix.os-version }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
