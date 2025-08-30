@@ -48,6 +48,8 @@ jobs:
           tags: ${{ steps.meta0.outputs.tags }}
           load: true
 
+      - run: docker images
+
       - name: Docker meta vs-pytorch
         id: meta1
         uses: docker/metadata-action@v5
