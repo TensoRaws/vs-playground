@@ -35,7 +35,7 @@ jobs:
           tags: |
             latest
             cuda
-            ${{ github.ref_name }}
+            cuda-${{ github.ref_name }}
 
       - name: Build vs-pytorch
         uses: docker/build-push-action@v6
@@ -54,7 +54,7 @@ jobs:
           tags: |
             latest
             cuda
-            ${{ github.ref_name }}
+            cuda-${{ github.ref_name }}
 
       - name: Build vs-playground
         uses: docker/build-push-action@v6
