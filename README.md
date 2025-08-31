@@ -38,7 +38,7 @@ the playground image has sshd installed, you can ssh into the container to dev
 - user: root
 - password: 123456
 
-## Base Environment
+### Base Environment
 
 - system: Ubuntu 22.04
 - GCC/G++: 13
@@ -52,6 +52,12 @@ the playground image has sshd installed, you can ssh into the container to dev
 - libvpx: latest
 - fdk-aac: latest
 - libass: latest
+
+### AI Environment
+
+- CUDA toolkit: 12.9
+- PyTorch: 2.7.1+cu128
+- cupy: cuda12x
 
 ### VapourSynth Python Plugin List
 
