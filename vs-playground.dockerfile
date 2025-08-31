@@ -4,11 +4,8 @@ FROM lychee0/vs-pytorch:${BASE_CONTAINER_TAG}
 
 WORKDIR /video
 
-# Install Jupyter
-RUN pip install jupyterlab==4.3.4
-
-# Install yuuno
-RUN pip install yuuno==1.4
+# Install Jupyter and yuuno
+RUN pip install --no-cache-dir jupyterlab==4.3.4 yuuno==1.4
 
 # Install ssh
 RUN apt install openssh-server -y && \
