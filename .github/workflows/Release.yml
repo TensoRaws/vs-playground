@@ -26,24 +26,6 @@ jobs:
           username: lychee0
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Docker meta vs-ffmpeg-base
-        id: meta0
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            lychee0/vs-ffmpeg-base
-          tags: |
-            latest
-            ${{ github.ref_name }}
-
-      - name: Build vs-ffmpeg-base
-        uses: docker/build-push-action@v6
-        with:
-          platforms: linux/amd64
-          push: true
-          file: vs-ffmpeg-base.dockerfile
-          tags: ${{ steps.meta0.outputs.tags }}
-
       - name: Docker meta vs-pytorch
         id: meta1
         uses: docker/metadata-action@v5
@@ -62,8 +44,6 @@ jobs:
           push: true
           file: vs-pytorch.dockerfile
           tags: ${{ steps.meta1.outputs.tags }}
-          build-args: |
-            BASE_CONTAINER_TAG=latest
 
       - name: Docker meta vs-playground
         id: meta2

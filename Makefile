@@ -5,15 +5,9 @@ lint:
 	pre-commit install
 	pre-commit run --all-files
 
-.PHONY: ff
-ff:
-	docker buildx build -f vs-ffmpeg-base.dockerfile -t lychee0/vs-ffmpeg-base .
-	docker tag lychee0/vs-ffmpeg-base lychee0/vs-ffmpeg-base:latest
-	docker tag lychee0/vs-ffmpeg-base lychee0/vs-ffmpeg-base:dev
-
 .PHONY: pt
 pt:
-	docker buildx build -f vs-pytorch.dockerfile -t lychee0/vs-pytorch --build-arg BASE_CONTAINER_TAG=latest .
+	docker buildx build -f vs-pytorch.dockerfile -t lychee0/vs-pytorch .
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:latest
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:dev
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:cuda-dev
