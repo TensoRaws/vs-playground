@@ -1,8 +1,8 @@
 # vs-playground
 
 [![CI-test](https://github.com/TensoRaws/vs-playground/actions/workflows/CI-test.yml/badge.svg)](https://github.com/TensoRaws/vs-playground/actions/workflows/CI-test.yml)
+[![CI-build](https://github.com/TensoRaws/vs-playground/actions/workflows/CI-build.yml/badge.svg)](https://github.com/TensoRaws/vs-playground/actions/workflows/CI-build.yml)
 [![Release](https://github.com/TensoRaws/vs-playground/actions/workflows/Release.yml/badge.svg)](https://github.com/TensoRaws/vs-playground/actions/workflows/Release.yml)
-[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/RJWBNXdmdaDACvcacXFQ3e/Ft9gQaqD6LLAwZL3wjB4WL/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/RJWBNXdmdaDACvcacXFQ3e/Ft9gQaqD6LLAwZL3wjB4WL/tree/main)
 
 dev with docker and jupyter notebook!
 
