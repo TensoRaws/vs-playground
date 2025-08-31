@@ -1,8 +1,5 @@
 .DEFAULT_GOAL := default
 
-version := v0.2.0
-VS_FFMPEG_DOCKER_VERSION := v0.1.0
-
 .PHONY: lint
 lint:
 	pre-commit install
@@ -10,25 +7,11 @@ lint:
 
 .PHONY: pt
 pt:
-	docker buildx build -f vs-pytorch.dockerfile -t lychee0/vs-pytorch --build-arg BASE_CONTAINER_TAG=${VS_FFMPEG_DOCKER_VERSION} .
+	docker buildx build -f vs-pytorch.dockerfile -t lychee0/vs-pytorch .
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:latest
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:dev
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:cuda-dev
-	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:cuda-${version}
 	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:cuda
-
-.PHONY: pt-release-dev
-pt-release-dev:
-	docker login
-	docker push lychee0/vs-pytorch:dev
-	docker push lychee0/vs-pytorch:cuda-dev
-
-.PHONY: pt-release
-pt-release:
-	docker login
-	docker push lychee0/vs-pytorch:latest
-	docker push lychee0/vs-pytorch:cuda
-	docker push lychee0/vs-pytorch:cuda-${version}
 
 .PHONY: pg
 pg:
@@ -36,27 +19,7 @@ pg:
 	docker tag lychee0/vs-playground lychee0/vs-playground:latest
 	docker tag lychee0/vs-playground lychee0/vs-playground:dev
 	docker tag lychee0/vs-playground lychee0/vs-playground:cuda-dev
-	docker tag lychee0/vs-playground lychee0/vs-playground:cuda-${version}
 	docker tag lychee0/vs-playground lychee0/vs-playground:cuda
-
-.PHONY: pg-release-dev
-pg-release-dev:
-	docker login
-	docker push lychee0/vs-playground:dev
-	docker push lychee0/vs-playground:cuda-dev
-
-.PHONY: pg-release
-pg-release:
-	docker login
-	docker push lychee0/vs-playground:latest
-	docker push lychee0/vs-playground:cuda
-	docker push lychee0/vs-playground:cuda-${version}
-
-.PHONY: release-dev
-release-dev: pt pt-release-dev pg pg-release-dev
-
-.PHONY: release
-release: pt pt-release pg pg-release
 
 .PHONY: dev
 dev:

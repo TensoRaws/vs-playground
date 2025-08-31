@@ -1,11 +1,17 @@
-name: Release
+name: Docker Build CI
 
 on:
-  workflow_dispatch:
-
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
+      - LICENSE
+  pull_request:
+    paths-ignore:
+      - "**.md"
+      - LICENSE
+  workflow_dispatch:
 
 jobs:
   docker:
@@ -21,6 +27,7 @@ jobs:
           driver: docker # use local image for chain builds
 
       - name: Login to Docker Hub
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           username: lychee0
@@ -33,15 +40,14 @@ jobs:
           images: |
             lychee0/vs-pytorch
           tags: |
-            latest
-            cuda
-            ${{ github.ref_name }}
+            dev
+            cuda-dev
 
       - name: Build vs-pytorch
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           file: vs-pytorch.dockerfile
           tags: ${{ steps.meta1.outputs.tags }}
 
@@ -52,27 +58,15 @@ jobs:
           images: |
             lychee0/vs-playground
           tags: |
-            latest
-            cuda
-            ${{ github.ref_name }}
+            dev
+            cuda-dev
 
       - name: Build vs-playground
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           file: vs-playground.dockerfile
           tags: ${{ steps.meta2.outputs.tags }}
           build-args: |
-            BASE_CONTAINER_TAG=latest
-
-  github:
-    needs: [docker]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: Release
-        uses: softprops/action-gh-release@v2
+            BASE_CONTAINER_TAG=dev
