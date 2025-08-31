@@ -200,7 +200,9 @@ RUN git clone https://github.com/mpeg5/xeve && \
   cd xeve && mkdir build && cd build && cmake .. && make -j$(nproc) && make install
 
 # dependencies for ffmpeg: libsoxr-dev libxml2-dev
-RUN git clone https://github.com/FFmpeg/FFmpeg --depth 1 && cd FFmpeg && \
+RUN wget https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n8.0.tar.gz && \
+  tar -zxvf n8.0.tar.gz && mv FFmpeg-n8.0 FFmpeg && rm n8.0.tar.gz && \
+  cd FFmpeg && \
   CFLAGS="-O3 -static-libgcc -fno-strict-overflow -fstack-protector-all -fPIE" && \
     ./configure \
     --extra-cflags="-fopenmp -lcrypto -lz -ldl" \
@@ -237,7 +239,6 @@ RUN git clone https://github.com/FFmpeg/FFmpeg --depth 1 && cd FFmpeg && \
     --enable-libsoxr \
     --enable-libopenjpeg \
     --enable-libdav1d \
-    #--enable-librav1e \ # I'm lazy to compile it
     --enable-libsrt \
     --enable-libsvtav1 \
     --enable-libdavs2 \

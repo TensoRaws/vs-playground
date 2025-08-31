@@ -67,7 +67,7 @@ libboxblur.so
 libbwdif.so
 libcas.so
 libctmf.so
-libd2vsource.so
+#libd2vsource.so
 libdctfilter.so
 libdescale.so
 libdfttest2_cpu.so
