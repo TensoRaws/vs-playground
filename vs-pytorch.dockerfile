@@ -473,6 +473,10 @@ RUN cp znedi3/nnedi3_weights.bin /usr/local/lib && \
 # Install VapourSynth CUDA plugins
 ###
 
+# align with PyTorch supported architectures
+# >>> torch.cuda.get_arch_list()
+# ['sm_50', 'sm_60', 'sm_61', 'sm_70', 'sm_75', 'sm_80', 'sm_86', 'sm_90', 'sm_100', 'sm_120']
+
 # AmusementClub's plugins
 # dfttest2
 RUN git clone https://github.com/AmusementClub/vs-dfttest2 --depth 1 --recurse-submodules && cd vs-dfttest2 && \
@@ -482,7 +486,7 @@ RUN git clone https://github.com/AmusementClub/vs-dfttest2 --depth 1 --recurse-s
     -D CMAKE_BUILD_TYPE=Release \
     -D CMAKE_CXX_FLAGS="-Wall -ffast-math -march=x86-64-v3" \
     -D CMAKE_CUDA_FLAGS="--threads 0 --use_fast_math --resource-usage -Wno-deprecated-gpu-targets" \
-    -D CMAKE_CUDA_ARCHITECTURES="all" && \
+    -D CMAKE_CUDA_ARCHITECTURES="50;60;61;70;75;80;86;90;100;120" && \
     cmake --build build --verbose && \
     cmake --install build --verbose --prefix /usr/local
 
@@ -493,7 +497,7 @@ RUN git clone https://github.com/AmusementClub/vs-nlm-cuda && cd vs-nlm-cuda && 
     -D CMAKE_BUILD_TYPE=Release \
     -D CMAKE_CXX_FLAGS="-Wall -ffast-math -march=x86-64-v3" \
     -D CMAKE_CUDA_FLAGS="--threads 0 --use_fast_math --resource-usage -Wno-deprecated-gpu-targets" \
-    -D CMAKE_CUDA_ARCHITECTURES="all" && \
+    -D CMAKE_CUDA_ARCHITECTURES="50;60;61;70;75;80;86;90;100;120" && \
     cmake --build build --verbose && \
     cmake --install build --verbose --prefix /usr/local
 
@@ -506,7 +510,7 @@ RUN git clone https://github.com/WolframRhodium/VapourSynth-BM3DCUDA --depth 1 &
     -D CMAKE_BUILD_TYPE=Release \
     -D CMAKE_CXX_FLAGS="-Wall -ffast-math -march=x86-64-v3" \
     -D CMAKE_CUDA_FLAGS="--threads 0 --use_fast_math --resource-usage -Wno-deprecated-gpu-targets" \
-    -D CMAKE_CUDA_ARCHITECTURES="all" && \
+    -D CMAKE_CUDA_ARCHITECTURES="50;60;61;70;75;80;86;90;100;120" && \
     cmake --build build --verbose && \
     cmake --install build --verbose --prefix /usr/local
 RUN ln -s /usr/local/lib/libbm3dcuda.so /usr/local/lib/vapoursynth/libbm3dcuda.so && \
@@ -520,7 +524,7 @@ RUN git clone https://github.com/WolframRhodium/VapourSynth-ILS --depth 1 && cd 
     -D CMAKE_BUILD_TYPE=Release \
     -D CMAKE_CXX_FLAGS="-Wall -ffast-math -march=x86-64-v3" \
     -D CMAKE_CUDA_FLAGS="--threads 0 --use_fast_math --resource-usage -Wno-deprecated-gpu-targets" \
-    -D CMAKE_CUDA_ARCHITECTURES="all" && \
+    -D CMAKE_CUDA_ARCHITECTURES="50;60;61;70;75;80;86;90;100;120" && \
     cmake --build build --verbose
 RUN cp VapourSynth-ILS/build/libils.so /usr/local/lib && \
     ln -s /usr/local/lib/libils.so /usr/local/lib/vapoursynth/libils.so
@@ -537,28 +541,8 @@ RUN pip install --no-cache-dir \
 # install vsutil
 RUN pip install --no-cache-dir vsutil==0.8.0
 
-## install Jaded Encoding Thaumaturgy's func package (Why you *** require python >= 3.12?)
-## fix import error in my branch
-#RUN pip install git+https://github.com/TensoRaws/vs-tools-2.3.0.git
-#RUN pip install \
-#    vspyplugin==1.3.2 \
-#    vskernels==2.4.1 \
-#    vsexprtools==1.4.6 \
-#    vsrgtools==1.5.1 \
-#    vsmasktools==1.1.2 \
-#    vsaa==1.8.2 \
-#    vsscale==1.9.1 \
-#    vsdenoise==2.4.0 \
-#    vsdehalo==1.7.2 \
-#    vsdeband==1.0.2 \
-#    vsdeinterlace==0.5.1 \
-#    vssource==0.9.5
-
 # install maven's func package
 RUN pip install --no-cache-dir git+https://github.com/HomeOfVapourSynthEvolution/mvsfunc.git
-
-# install holywu's func package
-RUN pip install --no-cache-dir git+https://github.com/HomeOfVapourSynthEvolution/havsfunc.git
 
 # install PyTorch
 RUN pip install --no-cache-dir torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/cu128

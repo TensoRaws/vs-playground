@@ -67,8 +67,6 @@ ccrestoration
 ccvfi
 vsutil
 mvsfunc
-havsfunc
-JET's funcs
 ```
 
 ### VapourSynth C++ Plugin List
