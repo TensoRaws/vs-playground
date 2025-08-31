@@ -42,7 +42,7 @@ the playground image has sshd installed, you can ssh into the container to dev
 
 - system: Ubuntu 22.04
 - GCC/G++: 13
-- python: 3.11
+- python: 3.10
 - FFmpeg: 8.0
 - VapourSynth: R70
 - x264: latest

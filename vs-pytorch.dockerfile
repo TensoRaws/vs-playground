@@ -11,9 +11,9 @@ RUN apt update && apt upgrade -y
 
 # Install Python versions and pip
 RUN apt install -y \
-    python3.11 \
-    python3.11-venv \
-    python3.11-dev \
+    python3.10 \
+    python3.10-venv \
+    python3.10-dev \
     python3-pip \
     python-is-python3
 
