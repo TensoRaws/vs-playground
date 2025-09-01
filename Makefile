@@ -7,17 +7,19 @@ lint:
 
 .PHONY: pt
 pt:
-	docker buildx build -f vs-pytorch.dockerfile -t lychee0/vs-pytorch .
-	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:dev
-	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:cuda-dev
-	docker tag lychee0/vs-pytorch lychee0/vs-pytorch:cuda
+	docker buildx build -f vs-pytorch.dockerfile \
+		-t lychee0/vs-pytorch \
+		-t lychee0/vs-pytorch:dev \
+		-t lychee0/vs-pytorch:cuda-dev \
+		-t lychee0/vs-pytorch:cuda .
 
 .PHONY: pg
 pg:
-	docker buildx build -f vs-playground.dockerfile -t lychee0/vs-playground --build-arg BASE_CONTAINER_TAG=cuda .
-	docker tag lychee0/vs-playground lychee0/vs-playground:dev
-	docker tag lychee0/vs-playground lychee0/vs-playground:cuda-dev
-	docker tag lychee0/vs-playground lychee0/vs-playground:cuda
+	docker buildx build -f vs-playground.dockerfile --build-arg BASE_CONTAINER_TAG=cuda \
+		-t lychee0/vs-playground \
+		-t lychee0/vs-playground:dev \
+		-t lychee0/vs-playground:cuda-dev \
+		-t lychee0/vs-playground:cuda .
 
 .PHONY: dev
 dev:
