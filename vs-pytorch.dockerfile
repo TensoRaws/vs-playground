@@ -276,7 +276,7 @@ RUN wget https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n8.0.tar.gz && \
     --enable-pthreads \
     --enable-runtime-cpudetect \
     --enable-lto && \
-    make -j$(nproc) && make install
+    make -s -j$(nproc) && make install
 
 ###
 # Install VapourSynth C++ plugins
