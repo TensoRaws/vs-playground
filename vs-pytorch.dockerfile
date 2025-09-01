@@ -562,6 +562,6 @@ RUN pip cache purge && apt clean
 ####
 ## Squash final image
 ####
-#
-#FROM scratch AS final
-#COPY --from=builder / /
+
+FROM scratch AS final
+COPY --from=builder / /
