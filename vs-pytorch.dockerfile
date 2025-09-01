@@ -367,7 +367,7 @@ RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI2 --
 
 # EEDI3
 RUN git clone https://github.com/HomeOfVapourSynthEvolution/VapourSynth-EEDI3 --depth 1 && cd VapourSynth-EEDI3 && \
-    mkdir build && cd build && meson -D opencl=false ../ && ninja && ninja install
+    mkdir build && cd build && meson ../ && ninja && ninja install
 
 # HomeOfAviSynthPlusEvolution's plugins
 # neo_FFT3D
