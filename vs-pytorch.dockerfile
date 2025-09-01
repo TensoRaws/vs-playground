@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 AS builder
+FROM ubuntu:22.04
 
 # Set environment variables to avoid user interaction during the installation process
 ENV DEBIAN_FRONTEND=noninteractive
