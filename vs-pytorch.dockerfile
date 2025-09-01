@@ -555,13 +555,3 @@ RUN pip install --no-cache-dir \
     mbfunc==0.1.0 \
     ccrestoration==0.2.1 \
     ccvfi==0.0.1
-
-# clear cache
-RUN pip cache purge && apt clean
-
-####
-## Squash final image
-####
-
-FROM scratch AS final
-COPY --from=builder / /
