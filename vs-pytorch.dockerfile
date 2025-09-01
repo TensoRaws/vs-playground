@@ -276,7 +276,7 @@ RUN wget https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n8.0.tar.gz && \
     --enable-pthreads \
     --enable-runtime-cpudetect \
     --enable-lto && \
-    make -s -j$(nproc) && make install
+    make -j$(nproc) && make install
 
 ###
 # Install VapourSynth C++ plugins
@@ -559,9 +559,9 @@ RUN pip install --no-cache-dir \
 # clear cache
 RUN pip cache purge && apt clean
 
-###
-# Squash final image
-###
-
-FROM scratch AS final
-COPY --from=builder / /
+####
+## Squash final image
+####
+#
+#FROM scratch AS final
+#COPY --from=builder / /
