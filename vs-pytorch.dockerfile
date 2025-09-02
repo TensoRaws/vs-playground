@@ -84,7 +84,7 @@ RUN git clone https://github.com/sekrit-twc/zimg --recursive && cd zimg && \
 ### Install VapourSynth
 ARG VAPOURSYNTH_VERSION=R70
 RUN wget https://github.com/vapoursynth/vapoursynth/archive/refs/tags/${VAPOURSYNTH_VERSION}.tar.gz && \
-  tar -zxvf ${VAPOURSYNTH_VERSION}.tar.gz && mv vapoursynth-${VAPOURSYNTH_VERSION} vapoursynth && cd vapoursynth && \
+  tar -zxf ${VAPOURSYNTH_VERSION}.tar.gz && mv vapoursynth-${VAPOURSYNTH_VERSION} vapoursynth && cd vapoursynth && \
   ./autogen.sh && ./configure && make -j$(nproc) && make install && ldconfig
 # install vapoursynth python package
 RUN cd vapoursynth && python setup.py install
@@ -141,7 +141,7 @@ RUN git clone https://code.videolan.org/videolan/x264.git --depth 1 && \
 ARG X265_VERSION=4.1
 ARG X265_URL="https://bitbucket.org/multicoreware/x265_git/downloads/x265_$X265_VERSION.tar.gz"
 # multilib.sh will build 8,10,12bit libraries and link them together to 8bit's directory
-RUN wget -O x265_git.tar.bz2 "$X265_URL" && tar xf x265_git.tar.bz2 && cd x265_*/build/linux && \
+RUN wget -O x265.tar.gz "$X265_URL" && tar -zxf x265.tar.gz && cd x265_*/build/linux && \
   MAKEFLAGS="-j$(nproc)" ./multilib.sh && \
   make -C 8bit -j$(nproc) install
 
@@ -186,7 +186,7 @@ ARG XVID_URL="https://downloads.xvid.com/downloads/xvidcore-$XVID_VERSION.tar.gz
 ARG XVID_SHA256=abbdcbd39555691dd1c9b4d08f0a031376a3b211652c0d8b3b8aa9be1303ce2d
 RUN wget -O libxvid.tar.gz "$XVID_URL" && \
     echo "$XVID_SHA256  libxvid.tar.gz" | sha256sum --status -c - && \
-    tar xf libxvid.tar.gz && \
+    tar -zxf libxvid.tar.gz && \
     cd xvidcore/build/generic && \
     CFLAGS="-O2 -fno-strict-overflow -fstack-protector-all -fPIE -fstrength-reduce -ffast-math" ./configure && \
     make -j$(nproc) && make install
