@@ -1,0 +1,1 @@
+ffmpeg -i - -pix_fmt yuv420p10le -c:v hevc_nvenc -cq 18 FINALRIP_ENCODED_CLIP.mkv
