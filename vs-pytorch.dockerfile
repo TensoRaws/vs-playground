@@ -222,7 +222,7 @@ RUN git clone https://github.com/mpeg5/xeve && \
 
 # dependencies for ffmpeg: libsoxr-dev libxml2-dev
 RUN wget https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n8.0.tar.gz && \
-  tar -zxvf n8.0.tar.gz && mv FFmpeg-n8.0 FFmpeg && rm n8.0.tar.gz && \
+  tar -zxf n8.0.tar.gz && mv FFmpeg-n8.0 FFmpeg && rm n8.0.tar.gz && \
   cd FFmpeg && \
   CFLAGS="-O3 -static-libgcc -fno-strict-overflow -fstack-protector-all -fPIE" && \
     ./configure \
