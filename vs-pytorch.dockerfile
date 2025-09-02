@@ -226,9 +226,9 @@ RUN wget https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n8.0.tar.gz && \
   cd FFmpeg && \
   CFLAGS="-O3 -static-libgcc -fno-strict-overflow -fstack-protector-all -fPIE" && \
     ./configure \
-    --extra-cflags="-fopenmp -lcrypto -lz -ldl" \
+    --extra-cflags="-fopenmp -lcrypto -lz -ldl -I${CUDA_PATH}" \
     --extra-cxxflags="-fopenmp -lcrypto -lz -ldl" \
-    --extra-ldflags="-fopenmp -lcrypto -lz -ldl" \
+    --extra-ldflags="-fopenmp -lcrypto -lz -ldl -L${CUDA_PATH}/lib64" \
     --toolchain=hardened \
     --enable-static \
     --enable-shared \
@@ -277,6 +277,10 @@ RUN wget https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n8.0.tar.gz && \
     --enable-runtime-cpudetect \
     --enable-lto && \
     make -j$(nproc) && make install
+
+# Install static ffmpeg build (fallback)
+COPY --from=mwader/static-ffmpeg:8.0 /ffmpeg /static-ffmpeg/ffmpeg
+COPY --from=mwader/static-ffmpeg:8.0 /ffprobe /static-ffmpeg/ffprobe
 
 ###
 # Install VapourSynth C++ plugins

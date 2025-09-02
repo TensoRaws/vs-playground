@@ -44,6 +44,7 @@ the playground image has sshd installed, you can ssh into the container to dev
 - GCC/G++: 13
 - python: 3.10
 - FFmpeg: 8.0
+- [Static FFmpeg](https://github.com/wader/static-ffmpeg): 8.0 (/static-ffmpeg/ffmpeg)
 - VapourSynth: R70
 - x264: latest
 - x265: 4.1
