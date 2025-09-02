@@ -226,8 +226,8 @@ RUN wget https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n8.0.tar.gz && \
   cd FFmpeg && \
   CFLAGS="-O3 -static-libgcc -fno-strict-overflow -fstack-protector-all -fPIE" && \
     ./configure \
-    --extra-cflags="-fopenmp -lcrypto -lz -ldl -I${CUDA_PATH}" \
-    --extra-cxxflags="-fopenmp -lcrypto -lz -ldl -I${CUDA_PATH}" \
+    --extra-cflags="-fopenmp -lcrypto -lz -ldl -I${CUDA_PATH}/include" \
+    --extra-cxxflags="-fopenmp -lcrypto -lz -ldl -I${CUDA_PATH}/include" \
     --extra-ldflags="-fopenmp -lcrypto -lz -ldl -L${CUDA_PATH}/lib64" \
     --toolchain=hardened \
     --enable-static \
