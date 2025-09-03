@@ -57,7 +57,7 @@ the playground image has sshd installed, you can ssh into the container to dev
 ### AI Environment
 
 - CUDA toolkit: 12.9
-- PyTorch: 2.7.1+cu128
+- PyTorch: 2.8.0+cu128 ['sm_70', 'sm_75', 'sm_80', 'sm_86', 'sm_90', 'sm_100', 'sm_120']
 - cupy: cuda12x
 
 ### VapourSynth Python Plugin List

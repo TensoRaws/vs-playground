@@ -548,8 +548,9 @@ RUN pip install --no-cache-dir vsutil==0.8.0
 # install maven's func package
 RUN pip install --no-cache-dir git+https://github.com/HomeOfVapourSynthEvolution/mvsfunc.git
 
-# install PyTorch
-RUN pip install --no-cache-dir torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/cu128
+# install PyTorch 2.8.0 with CUDA 12.8 support
+# ['sm_70', 'sm_75', 'sm_80', 'sm_86', 'sm_90', 'sm_100', 'sm_120']
+RUN pip install --no-cache-dir torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128
 
 # install CuPy
 RUN pip install --no-cache-dir cupy-cuda12x
