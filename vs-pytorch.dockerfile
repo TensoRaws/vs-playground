@@ -110,8 +110,9 @@ RUN git clone https://github.com/KhronosGroup/Vulkan-Headers.git --depth 1 && \
   cd Vulkan-Headers/ && cmake -S . -B build/ && cmake --install build
 
 # nv-codec-headers
-RUN git clone https://github.com/FFmpeg/nv-codec-headers --depth 1 && \
-  cd nv-codec-headers && make -j$(nproc) && make install
+RUN wget https://github.com/FFmpeg/nv-codec-headers/releases/download/n12.2.72.0/nv-codec-headers-12.2.72.0.tar.gz && \
+  tar -zxf nv-codec-headers-*.tar.gz && rm nv-codec-headers-*.tar.gz && \
+  cd nv-codec-headers-* && make -j$(nproc) && make install
 
 RUN git clone https://github.com/gypified/libmp3lame --depth 1 && \
   cd libmp3lame && ./configure --enable-nasm --enable-static --enable-shared && make -j$(nproc) install
